@@ -1,7 +1,9 @@
 {
-  "name": "create-react-app-redux",
+  "name": "palette16",
   "version": "0.1.0",
   "private": true,
+  "author": "Dmitriy Semyushkin <git@devg.ru> (https://devg.ru)",
+  "license": "MIT",
   "devDependencies": {
     "cross-env": "^5.1.1",
     "react-scripts": "^1.0.14"
