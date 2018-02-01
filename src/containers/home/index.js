@@ -56,10 +56,15 @@ class Home extends Component {
       return null;
     }
 
+    const textColors = [
+      palette.base[0],
+      palette.base[7],
+    ];
+
     return (
       <div className="Home">
-        <SwatchLine colors={palette.base} />
-        <SwatchLine colors={palette.accents} />
+        <SwatchLine colors={palette.base} textColors={textColors} />
+        <SwatchLine colors={palette.accents} textColors={textColors} />
         <ColorSpace colors={all} />
         {forceField && <ForceField forceField={forceField} />}
         <CodeExample colors={all} />

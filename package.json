@@ -9,13 +9,16 @@
     "react-scripts": "^1.0.14"
   },
   "dependencies": {
+    "closest-color": "^1.2.1",
     "d3-array": "^1.2.1",
     "d3-color": "^1.0.3",
     "d3-force": "^1.1.0",
     "delta-e": "^0.0.7",
     "get-contrast": "^2.0.0",
     "js-yaml": "^3.10.0",
+    "lodash.maxby": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
+    "object-map": "^1.0.2",
     "prop-types": "^15.6.0",
     "react": "15",
     "react-dom": "15",
@@ -27,6 +30,7 @@
     "react-three-renderer": "^3.2.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "round-to-precision": "^1.0.5",
     "sanitize.css": "^5.0.0",
     "three": "^0.87.1",
     "three-orbit-controls": "^82.1.0"

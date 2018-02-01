@@ -1,6 +1,8 @@
 .Swatch {
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 270px;
+  height: 140px;
   margin: 5px;
+  padding: 10px;
+  vertical-align: top;
 }

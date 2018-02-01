@@ -1,3 +1,5 @@
 .SwatchLine {
-  line-height: 0;
+  display: block;
+  clear: both;
+  overflow: hidden;
 }
