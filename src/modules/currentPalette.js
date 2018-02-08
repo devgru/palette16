@@ -23,6 +23,48 @@ export default (state = initialState, action) => {
       return {
         ...state,
         palette,
+        slots: [
+          {
+            role: 'background',
+            indices: [0, 1, 2, 3],
+          },
+          {
+            role: 'foreground',
+            indices: [4, 5, 6, 7],
+          },
+          {
+            role: 'accent',
+            indices: [8],
+          },
+          {
+            role: 'accent',
+            indices: [9],
+          },
+          {
+            role: 'accent',
+            indices: [10],
+          },
+          {
+            role: 'accent',
+            indices: [11],
+          },
+          {
+            role: 'accent',
+            indices: [12],
+          },
+          {
+            role: 'accent',
+            indices: [13],
+          },
+          {
+            role: 'accent',
+            indices: [14],
+          },
+          {
+            role: 'accent',
+            indices: [15],
+          },
+        ]
       };
 
     case FORCE_FIELD_UPDATED:

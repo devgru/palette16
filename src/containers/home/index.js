@@ -10,6 +10,7 @@ import SwatchLine from '../../presentational/SwatchLine';
 import ColorSpace from '../../presentational/ColorSpace';
 import ForceField from '../../presentational/ForceField';
 import CodeExample from '../../presentational/CodeExample';
+import Slots from '../../presentational/Slots';
 
 class Home extends Component {
   constructor(props) {
@@ -50,23 +51,20 @@ class Home extends Component {
     const {
       palette,
       forceField,
+      slots,
     } = currentPalette;
 
     if (!all) {
       return null;
     }
 
-    const textColors = [
-      palette.base[0],
-      palette.base[7],
-    ];
-
     return (
       <div className="Home">
-        <SwatchLine colors={palette.base} textColors={textColors} />
-        <SwatchLine colors={palette.accents} textColors={textColors} />
-        <ColorSpace colors={all} />
+        <SwatchLine colors={palette.base} textColors={palette.base} />
+        <SwatchLine colors={palette.accents} textColors={palette.base} />
+        <Slots colors={all} slots={slots} textColors={palette.base} />
         {forceField && <ForceField forceField={forceField} />}
+        <ColorSpace colors={all} />
         <CodeExample colors={all} />
       </div>
     );
