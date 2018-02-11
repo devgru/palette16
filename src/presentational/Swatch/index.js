@@ -24,14 +24,14 @@ function lightness(color) {
 function chromatic(color) {
   const C = color.c;
 
-  return C === 0 ? 'achromatic' : C < 10 ? 'almost achromatic' : 'chromatic';
+  return C === 0 ? 'achromatic' : C < 10 ? 'almost achromatic' : undefined;
 }
 
 function temperature(color) {
   const H = color.h;
   const C = color.c;
 
-  return C === 0 || H < RED_HUE || H > BLUE_HUE ? undefined : H < 143.95 ? 'warm' : 'cold';
+  return C === 0 || H < RED_HUE || H > BLUE_HUE ? 'non-spectral chromatic' : H < 143.95 ? 'warm' : 'cold';
 }
 
 function propertyOf(color) {
