@@ -16,6 +16,7 @@
     "delta-e": "^0.0.7",
     "get-contrast": "^2.0.0",
     "js-yaml": "^3.10.0",
+    "lodash.flatten": "^4.4.0",
     "lodash.maxby": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
     "object-map": "^1.0.2",

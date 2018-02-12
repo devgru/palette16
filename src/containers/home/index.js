@@ -2,7 +2,10 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {loadBase16Palette} from '../../modules/currentPalette';
+import {
+  loadBase16Palette,
+  loadBase16Lists,
+} from '../../modules/currentPalette';
 
 import './index.css';
 
@@ -16,6 +19,7 @@ class Home extends Component {
   constructor(props) {
     super(props);
 
+    this.props.loadBase16Lists();
     this.props.loadBase16Palette(
       'https://raw.githubusercontent.com/chriskempson/base16-unclaimed-schemes/master/solarized-light.yaml'
     );
@@ -94,7 +98,8 @@ const mapStateToProps = ({currentPalette}) => {
 };
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  loadBase16Palette
+  loadBase16Palette,
+  loadBase16Lists,
 }, dispatch);
 
 export default connect(

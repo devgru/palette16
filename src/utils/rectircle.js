@@ -2,7 +2,6 @@
 // Like squircle, but rectangular.
 const Rectircle = (width, height = width) => {
   const size = Math.min(width, height);
-  console.log(width, height);
 
   const c = size / 60;
 

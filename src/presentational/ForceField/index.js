@@ -22,10 +22,14 @@ class ForceField extends Component {
       />
     );
 
-    return (<svg width={200} height={200}>
-      {lines}
-      {points}
-    </svg>);
+    return (
+      <div>
+        <svg width={200} height={200}>
+          {lines}
+          {points}
+        </svg>
+      </div>
+    );
   }
 }
 

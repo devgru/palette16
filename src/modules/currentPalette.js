@@ -2,6 +2,7 @@ import yaml from 'js-yaml';
 import {range} from 'd3-array';
 import {rgb} from 'd3-color';
 import {ratio} from 'get-contrast';
+import flatten from 'lodash.flatten';
 
 import delta from '../utils/delta';
 import generateForceFieldLinks from '../utils/generateForceFieldLinks';
@@ -82,17 +83,44 @@ export default (state = initialState, action) => {
   }
 };
 
+const fetchYaml = async (url) => {
+  const response = await fetch(url);
+  const text = await response.text();
+  return yaml.safeLoad(text);
+};
+
+const loadScheme = (url) => fetchYaml(
+  url.replace('github.com', 'api.github.com/repos') +
+  '/contents?client_id=5df605cf10394cab2ad6&client_secret=257ce992952149587b4fb1ad88caf79eab61e9a1'
+);
+
+export const loadBase16Lists = () => async dispatch => {
+  const list = await fetchYaml(
+    'https://raw.githubusercontent.com/chriskempson/base16-schemes-source/master/list.yaml'
+  );
+  const palettes = await Promise.all(
+    Object.values(list).map(loadScheme)
+  );
+
+  const palettesFiles = flatten(
+    palettes.map((files) =>
+      files
+        .filter((file) => file.name.endsWith('.yaml'))
+        .map(({download_url}) => download_url)
+    )
+  );
+  console.log(palettes, palettesFiles);
+};
+
 export const loadBase16Palette = url => async dispatch => {
   dispatch({
     type: PALETTE_LOADING_STARTED
   });
 
-  const response = await fetch(url);
-  const text = await response.text();
-  const paletteFromYaml = yaml.safeLoad(text);
+  const palette = await fetchYaml(url);
 
   const all = range(0, 16).map(n =>
-    '#' + paletteFromYaml['base0' + n.toString(16).toUpperCase()]
+    '#' + palette['base0' + n.toString(16).toUpperCase()]
   );
 
   const BASE_COLORS_COUNT = 8;
