@@ -1,16 +1,15 @@
-import yaml from 'js-yaml';
-import {range} from 'd3-array';
-import {rgb} from 'd3-color';
-import {ratio} from 'get-contrast';
-import flatten from 'lodash.flatten';
+import { range } from 'd3-array';
+import { rgb } from 'd3-color';
+import { ratio } from 'get-contrast';
 
 import delta from '../utils/delta';
 import generateForceFieldLinks from '../utils/generateForceFieldLinks';
 import runForceFieldSimulation from '../utils/runForceFieldSimulation';
 
+import fetchYaml from '../utils/fetchYaml';
+
 export const PALETTE_LOADING_STARTED = 'currentPalette/PALETTE_LOADING_STARTED';
 export const PALETTE_LOADED = 'currentPalette/PALETTE_LOADED';
-export const PALETTE_LIST_LOADED = 'currentPalette/PALETTE_LIST_LOADED';
 export const FORCE_FIELD_UPDATED = 'currentPalette/FORCE_FIELD_UPDATED';
 
 const initialState = null;
@@ -21,7 +20,7 @@ export default (state = initialState, action) => {
       return null;
 
     case PALETTE_LOADED:
-      const {palette} = action;
+      const { palette } = action;
       return {
         ...state,
         palette,
@@ -66,17 +65,17 @@ export default (state = initialState, action) => {
             role: 'accent',
             indices: [15],
           },
-        ]
+        ],
       };
 
     case FORCE_FIELD_UPDATED:
-      const {nodes, links} = action;
+      const { nodes, links } = action;
       return {
         ...state,
         forceField: {
           nodes,
           links,
-        }
+        },
       };
 
     default:
@@ -84,56 +83,24 @@ export default (state = initialState, action) => {
   }
 };
 
-const fetchYaml = async (url) => {
-  const response = await fetch(url);
-  const text = await response.text();
-  return yaml.safeLoad(text);
-};
-
-const loadRepoContents = (url) => fetchYaml(
-  url.replace('github.com', 'api.github.com/repos') +
-  '/contents?client_id=5df605cf10394cab2ad6&client_secret=257ce992952149587b4fb1ad88caf79eab61e9a1'
-);
-
-export const loadBase16Lists = () => async dispatch => {
-  const reposList = await fetchYaml(
-    'https://raw.githubusercontent.com/chriskempson/base16-schemes-source/master/list.yaml'
-  );
-  const reposContents = await Promise.all(
-    Object.values(reposList).map(loadRepoContents)
-  );
-
-  const palettesFiles = flatten(
-    reposContents.map((files) =>
-      files
-        .filter((file) => file.name.endsWith('.yaml'))
-        .map(({download_url}) => download_url)
-    )
-  );
-  console.log('PF', palettesFiles);
-  dispatch({
-    type: PALETTE_LIST_LOADED,
-    files: palettesFiles,
-  });
-  // const palettes = await Promise.all(palettesFiles.map(fetchYaml));
-  // console.log(palettes);
-};
-
 export const loadBase16Palette = url => async dispatch => {
   dispatch({
-    type: PALETTE_LOADING_STARTED
+    type: PALETTE_LOADING_STARTED,
   });
 
   const palette = await fetchYaml(url);
 
-  const all = range(0, 16).map(n =>
-    '#' + palette['base0' + n.toString(16).toUpperCase()]
+  const all = range(0, 16).map(
+    n => '#' + palette['base0' + n.toString(16).toUpperCase()]
   );
 
   const BASE_COLORS_COUNT = 8;
   const ACCENT_COLORS_COUNT = 8;
   const base = all.slice(0, BASE_COLORS_COUNT);
-  const accents = all.slice(BASE_COLORS_COUNT, BASE_COLORS_COUNT + ACCENT_COLORS_COUNT);
+  const accents = all.slice(
+    BASE_COLORS_COUNT,
+    BASE_COLORS_COUNT + ACCENT_COLORS_COUNT
+  );
 
   dispatch({
     type: PALETTE_LOADED,
@@ -146,18 +113,19 @@ export const loadBase16Palette = url => async dispatch => {
   // TODO separate force field simulation
 
   const nodes = all.map((color, id) => {
-    const {r, g, b} = rgb(color);
+    const { r, g, b } = rgb(color);
     const x = b - r;
-    const y = -r -g -b;
-    return {color, id, r, g, b, x, y};
+    const y = -r - g - b;
+    return { color, id, r, g, b, x, y };
   });
 
   const links = generateForceFieldLinks(BASE_COLORS_COUNT, ACCENT_COLORS_COUNT);
 
-  links.forEach((link) => {
+  links.forEach(link => {
     const sourceColor = all[link.source];
     const targetColor = all[link.target];
     link.distance = delta(sourceColor, targetColor);
+    console.log(sourceColor, targetColor, all);
     link.contrast = ratio(sourceColor, targetColor);
     if (link.contrast < 2) {
       console.log(link, '!!!');
@@ -170,7 +138,7 @@ export const loadBase16Palette = url => async dispatch => {
     dispatch({
       type: FORCE_FIELD_UPDATED,
       nodes,
-      links
+      links,
     });
   }
 };

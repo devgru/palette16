@@ -1,13 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {
-  loadBase16Palette,
-  loadBase16Lists,
-} from '../../modules/currentPalette';
-
-import './index.css';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { loadBase16Palette } from '../../modules/currentPalette';
 
 import SwatchLine from '../../presentational/SwatchLine';
 import ColorSpace from '../../presentational/ColorSpace';
@@ -18,11 +13,6 @@ import Slots from '../../presentational/Slots';
 class Home extends Component {
   constructor(props) {
     super(props);
-
-    this.props.loadBase16Lists();
-    // this.props.loadBase16Palette(
-    //   'https://raw.githubusercontent.com/chriskempson/base16-unclaimed-schemes/master/solarized-light.yaml'
-    // );
   }
 
   componentDidMount() {
@@ -34,8 +24,8 @@ class Home extends Component {
   }
 
   updateStyles() {
-    const {style} = document.documentElement;
-    const {all} = this.props;
+    const { style } = document.documentElement;
+    const { all } = this.props;
 
     if (!all) {
       return;
@@ -46,17 +36,19 @@ class Home extends Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.loadPalette) {
+      nextProps.loadBase16Palette(nextProps.loadPalette);
+    }
+  }
+
   render() {
-    const {currentPalette, all} = this.props;
+    const { currentPalette, all } = this.props;
     if (!currentPalette || !all) {
       return null;
     }
 
-    const {
-      palette,
-      forceField,
-      slots,
-    } = currentPalette;
+    const { palette, forceField, slots } = currentPalette;
 
     if (!all) {
       return null;
@@ -85,24 +77,27 @@ Home.propTypes = {
   }),
 };
 
-const mapStateToProps = ({currentPalette}) => {
+const mapStateToProps = ({ currentPalette, router, paletteList }) => {
+  const palette = router.location.pathname.slice('/palette/'.length);
   if (!currentPalette) {
-    return {};
+    const paletteInfo = paletteList.paletteUrls[palette];
+    if (paletteInfo) {
+      return {
+        loadPalette: paletteInfo.url,
+      };
+    } else {
+      return {};
+    }
   }
 
   const { base, accents } = currentPalette.palette;
   return {
     currentPalette,
-    all: base.concat(accents)
-  }
+    all: base.concat(accents),
+  };
 };
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-  loadBase16Palette,
-  loadBase16Lists,
-}, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ loadBase16Palette }, dispatch);
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

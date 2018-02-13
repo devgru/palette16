@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 import OrbitControls from 'three-orbit-controls';
-import {rgb} from 'd3-color';
+import { rgb } from 'd3-color';
 import generatePoints from '../../utils/generatePoints';
 import createPoint from '../../utils/createPoint';
 import uniqBy from 'lodash.uniqby';
@@ -18,7 +18,7 @@ class ColorSpace extends Component {
 
     this.state = {
       backgroundPoints: generatePoints(),
-      renderScene: () => {}
+      renderScene: () => {},
     };
   }
 
@@ -37,32 +37,31 @@ class ColorSpace extends Component {
     delete this.controls;
   }
 
-  onManualRenderTriggerCreated = (renderScene) => {
-    this.setState({renderScene});
+  onManualRenderTriggerCreated = renderScene => {
+    this.setState({ renderScene });
     renderScene();
   };
 
   render() {
     const width = 200;
     const height = 200;
-    const {backgroundPoints} = this.state;
-    const {colors} = this.props;
+    const { backgroundPoints } = this.state;
+    const { colors } = this.props;
 
-    const palettePoints = colors.map((color) => {
-      const {r, g, b} = rgb(color);
+    const palettePoints = colors.map(color => {
+      const { r, g, b } = rgb(color);
       return createPoint(r, g, b);
     });
 
-    const uniqPoints = uniqBy(palettePoints, (a) => a.key);
+    const uniqPoints = uniqBy(palettePoints, a => a.key);
 
     return (
-      <div className="ColorSpace" ref={(ref) => this.ref = ref}>
+      <div className="ColorSpace" ref={ref => (this.ref = ref)}>
         <React3
           mainCamera="camera"
           width={width}
           height={height}
-          clearColor={0xEEEEEE}
-
+          clearColor={0xeeeeee}
           forceManualRender
           onManualRenderTriggerCreated={this.onManualRenderTriggerCreated}
         >
@@ -74,7 +73,6 @@ class ColorSpace extends Component {
               aspect={width / height}
               near={1}
               far={10000}
-
               position={this.cameraPosition}
             />
             {backgroundPoints}
@@ -87,7 +85,7 @@ class ColorSpace extends Component {
 }
 
 ColorSpace.propTypes = {
-  colors: PropTypes.arrayOf(PropTypes.string).isRequired
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default ColorSpace;

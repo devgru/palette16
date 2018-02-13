@@ -1,16 +1,16 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class ForceField extends Component {
   render() {
-    const {forceField} = this.props;
-    const {links, nodes} = forceField;
+    const { forceField } = this.props;
+    const { links, nodes } = forceField;
 
-    const points = nodes.map(({color, id, x, y}) =>
+    const points = nodes.map(({ color, id, x, y }) => (
       <circle cx={x} cy={y} fill={color} r={5} key={id} />
-    );
+    ));
 
-    const lines = links.map(({source, target}, i) =>
+    const lines = links.map(({ source, target }, i) => (
       <line
         stroke="black"
         x1={source.x}
@@ -20,7 +20,7 @@ class ForceField extends Component {
         key={i}
         strokeWidth={0.25}
       />
-    );
+    ));
 
     return (
       <div>
@@ -35,15 +35,19 @@ class ForceField extends Component {
 
 ForceField.propTypes = {
   forceField: PropTypes.shape({
-    nodes: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number,
-      color: PropTypes.string
-    })),
-    links: PropTypes.arrayOf(PropTypes.shape({
-      source: PropTypes.shape({}),
-      target: PropTypes.shape({})
-    })),
-  }).isRequired
+    nodes: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        color: PropTypes.string,
+      })
+    ),
+    links: PropTypes.arrayOf(
+      PropTypes.shape({
+        source: PropTypes.shape({}),
+        target: PropTypes.shape({}),
+      })
+    ),
+  }).isRequired,
 };
 
 export default ForceField;

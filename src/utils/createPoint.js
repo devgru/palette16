@@ -1,6 +1,6 @@
 import React from 'react';
 import * as THREE from 'three';
-import {rgb, lab} from 'd3-color';
+import { rgb, lab } from 'd3-color';
 
 const cubeSpace = 4;
 const cubeRatio = 2;
@@ -17,34 +17,26 @@ const angleY = -Math.PI / 4;
 const angleZ = Math.atan(1 / Math.sqrt(2));
 
 function rgbTransform(x) {
-  return .466 * x - 59.5;
+  return 0.466 * x - 59.5;
 }
 
 function calcRgbTarget(color) {
-  const {r, g, b} = rgb(color);
-  return new THREE.Vector3(
-    rgbTransform(r),
-    rgbTransform(g),
-    rgbTransform(b)
-  )
+  const { r, g, b } = rgb(color);
+  return new THREE.Vector3(rgbTransform(r), rgbTransform(g), rgbTransform(b))
     .applyAxisAngle(axisX, angleX)
     .applyAxisAngle(axisZ, angleZ)
-    .applyAxisAngle(axisY, angleY)
+    .applyAxisAngle(axisY, angleY);
 }
 
 function calcLabTarget(color) {
-  const {l, a, b} = lab(color);
-  return new THREE.Vector3(
-    b,
-    1.0306 * (-100 + 2 * l),
-    a
-  );
+  const { l, a, b } = lab(color);
+  return new THREE.Vector3(b, 1.0306 * (-100 + 2 * l), a);
 }
 
 function numberToHex(i) {
   const pad = '000000';
   const s = i.toString(16);
-  return '#' + pad.substring(0, pad.length - s.length) + s
+  return '#' + pad.substring(0, pad.length - s.length) + s;
 }
 
 export default function createPoint(r, g, b, a = 1) {
@@ -53,15 +45,10 @@ export default function createPoint(r, g, b, a = 1) {
 
   const position = calcLabTarget(rgb(color));
 
-  return <mesh
-    key={`${colorNumber} ${a}`}
-    position={position}
-  >
-    <sphereGeometry radius={pointSize} />
-    <meshBasicMaterial
-      transparent
-      opacity={a}
-      color={color}
-    />
-  </mesh>;
-};
+  return (
+    <mesh key={`${colorNumber} ${a}`} position={position}>
+      <sphereGeometry radius={pointSize} />
+      <meshBasicMaterial transparent opacity={a} color={color} />
+    </mesh>
+  );
+}

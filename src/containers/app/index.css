@@ -1,0 +1,11 @@
+.App {
+  background: var(--color0);
+  color: var(--color7);
+
+  position: relative;
+}
+
+.App-side {
+  float: right;
+  width: 250px;
+}

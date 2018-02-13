@@ -18,11 +18,12 @@ const Rectircle = (width, height = width) => {
 
   return [
     `M ${hCenter - hDiff},0`, // a
-    `C ${c},0 0,${c} 0,${vCenter - vDiff}`,  // b
+    `C ${c},0 0,${c} 0,${vCenter - vDiff}`, // b
     `L 0,${vCenter + vDiff}`, // c
     `C 0,${height - c} ${c},${height} ${hCenter - hDiff},${height}`, // d
     `L ${hCenter + hDiff},${height}`, // e
-    `C ${width - c},${height} ${width},${height - c} ${width},${vCenter + vDiff}`, // f
+    `C ${width - c},${height} ${width},${height - c} ${width},${vCenter +
+      vDiff}`, // f
     `L ${width},${vCenter - vDiff}`, // g
     `C ${width},${c} ${width - c},0 ${hCenter + hDiff},0`, // h
     'Z',
