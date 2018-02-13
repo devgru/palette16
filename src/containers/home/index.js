@@ -20,9 +20,9 @@ class Home extends Component {
     super(props);
 
     this.props.loadBase16Lists();
-    this.props.loadBase16Palette(
-      'https://raw.githubusercontent.com/chriskempson/base16-unclaimed-schemes/master/solarized-light.yaml'
-    );
+    // this.props.loadBase16Palette(
+    //   'https://raw.githubusercontent.com/chriskempson/base16-unclaimed-schemes/master/solarized-light.yaml'
+    // );
   }
 
   componentDidMount() {

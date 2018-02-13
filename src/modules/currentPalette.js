@@ -10,6 +10,7 @@ import runForceFieldSimulation from '../utils/runForceFieldSimulation';
 
 export const PALETTE_LOADING_STARTED = 'currentPalette/PALETTE_LOADING_STARTED';
 export const PALETTE_LOADED = 'currentPalette/PALETTE_LOADED';
+export const PALETTE_LIST_LOADED = 'currentPalette/PALETTE_LIST_LOADED';
 export const FORCE_FIELD_UPDATED = 'currentPalette/FORCE_FIELD_UPDATED';
 
 const initialState = null;
@@ -89,27 +90,33 @@ const fetchYaml = async (url) => {
   return yaml.safeLoad(text);
 };
 
-const loadScheme = (url) => fetchYaml(
+const loadRepoContents = (url) => fetchYaml(
   url.replace('github.com', 'api.github.com/repos') +
   '/contents?client_id=5df605cf10394cab2ad6&client_secret=257ce992952149587b4fb1ad88caf79eab61e9a1'
 );
 
 export const loadBase16Lists = () => async dispatch => {
-  const list = await fetchYaml(
+  const reposList = await fetchYaml(
     'https://raw.githubusercontent.com/chriskempson/base16-schemes-source/master/list.yaml'
   );
-  const palettes = await Promise.all(
-    Object.values(list).map(loadScheme)
+  const reposContents = await Promise.all(
+    Object.values(reposList).map(loadRepoContents)
   );
 
   const palettesFiles = flatten(
-    palettes.map((files) =>
+    reposContents.map((files) =>
       files
         .filter((file) => file.name.endsWith('.yaml'))
         .map(({download_url}) => download_url)
     )
   );
-  console.log(palettes, palettesFiles);
+  console.log('PF', palettesFiles);
+  dispatch({
+    type: PALETTE_LIST_LOADED,
+    files: palettesFiles,
+  });
+  // const palettes = await Promise.all(palettesFiles.map(fetchYaml));
+  // console.log(palettes);
 };
 
 export const loadBase16Palette = url => async dispatch => {
