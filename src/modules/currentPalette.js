@@ -12,12 +12,12 @@ export const PALETTE_LOADING_STARTED = 'currentPalette/PALETTE_LOADING_STARTED';
 export const PALETTE_LOADED = 'currentPalette/PALETTE_LOADED';
 export const FORCE_FIELD_UPDATED = 'currentPalette/FORCE_FIELD_UPDATED';
 
-const initialState = null;
+const initialState = {};
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case PALETTE_LOADING_STARTED:
-      return null;
+      return {};
 
     case PALETTE_LOADED:
       const { palette } = action;
@@ -83,7 +83,7 @@ export default (state = initialState, action) => {
   }
 };
 
-export const loadBase16Palette = url => async dispatch => {
+export const loadBase16Palette = ({ name, url }) => async dispatch => {
   dispatch({
     type: PALETTE_LOADING_STARTED,
   });
@@ -105,10 +105,13 @@ export const loadBase16Palette = url => async dispatch => {
   dispatch({
     type: PALETTE_LOADED,
     palette: {
+      name,
       base,
       accents,
     },
   });
+
+  return;
 
   // TODO separate force field simulation
 
@@ -125,7 +128,6 @@ export const loadBase16Palette = url => async dispatch => {
     const sourceColor = all[link.source];
     const targetColor = all[link.target];
     link.distance = delta(sourceColor, targetColor);
-    console.log(sourceColor, targetColor, all);
     link.contrast = ratio(sourceColor, targetColor);
     if (link.contrast < 2) {
       console.log(link, '!!!');

@@ -17,14 +17,19 @@ class App extends Component {
     const { palettes } = this.props;
     return (
       <div className="App">
-        <ul className="App-side">
-          {Object.keys(palettes).map(name => (
-            <li key={name}>
-              <Link to={'/palette/' + name}>{name}</Link>
-            </li>
-          ))}
-        </ul>
-        <Route path="/palette/" component={Home} />
+        <div className="App-body">
+          <Home />
+        </div>
+        <div className="App-side">
+          <h2>Palettes</h2>
+          <ul>
+            {Object.keys(palettes).map(name => (
+              <li key={name}>
+                <Link to={'/palette/' + name}>{name}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     );
   }

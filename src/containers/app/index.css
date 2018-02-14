@@ -2,10 +2,17 @@
   background: var(--color0);
   color: var(--color7);
 
-  position: relative;
+  display: flex;
+}
+
+a {
+  color: var(--color7);
+}
+
+.App-body {
+  width: calc(100% - 250px);
 }
 
 .App-side {
-  float: right;
   width: 250px;
 }

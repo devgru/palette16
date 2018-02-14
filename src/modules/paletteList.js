@@ -47,6 +47,7 @@ export const loadPaletteUrls = () => async dispatch => {
     const path = paletteUrl.split('/');
     const key = path[path.length - 1].slice(0, -5);
     hash[key] = {
+      name: key,
       url: paletteUrl,
       loaded: false,
       loading: false,

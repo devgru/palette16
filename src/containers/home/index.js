@@ -78,16 +78,19 @@ Home.propTypes = {
 };
 
 const mapStateToProps = ({ currentPalette, router, paletteList }) => {
+  console.log('MSTP');
   const palette = router.location.pathname.slice('/palette/'.length);
-  if (!currentPalette) {
-    const paletteInfo = paletteList.paletteUrls[palette];
+  const paletteInfo = paletteList.paletteUrls[palette];
+  if (!currentPalette.palette) {
     if (paletteInfo) {
-      return {
-        loadPalette: paletteInfo.url,
-      };
+      return { loadPalette: paletteInfo };
     } else {
       return {};
     }
+  }
+
+  if (paletteInfo.name !== currentPalette.palette.name) {
+    return { loadPalette: paletteInfo };
   }
 
   const { base, accents } = currentPalette.palette;
