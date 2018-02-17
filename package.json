@@ -16,7 +16,7 @@
     "d3-force": "^1.1.0",
     "delta-e": "^0.0.7",
     "get-contrast": "^2.0.0",
-    "husky": "^0.14.3",
+    "husky": "^0.15.0-rc.8",
     "js-yaml": "^3.10.0",
     "lint-staged": "^6.1.0",
     "lodash.flatten": "^4.4.0",
@@ -54,6 +54,11 @@
       "prettier --single-quote --write --trailing-comma es5",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run deploy"
+    }
   },
   "homepage": "http://devgru.github.io/palette16"
 }
