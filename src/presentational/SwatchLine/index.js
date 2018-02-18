@@ -4,13 +4,13 @@ import farthestOf from '../../utils/farthestOf';
 
 import './index.css';
 
-const SwatchLine = ({ colors, textColors }) => (
+const SwatchLine = ({ colors, uiContext }) => (
   <div className="SwatchLine">
     {colors.map((background, i) => (
       <Swatch
         key={i}
         background={background}
-        color={farthestOf(background, textColors)}
+        color={farthestOf(background, uiContext.textColors)}
       />
     ))}
   </div>

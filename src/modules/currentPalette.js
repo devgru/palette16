@@ -11,61 +11,49 @@ import fetchYaml from '../utils/fetchYaml';
 export const PALETTE_LOADING_STARTED = 'currentPalette/PALETTE_LOADING_STARTED';
 export const PALETTE_LOADED = 'currentPalette/PALETTE_LOADED';
 export const FORCE_FIELD_UPDATED = 'currentPalette/FORCE_FIELD_UPDATED';
+export const ADD_COLOR = 'currentPalette/ADD_COLOR';
+export const ADD_SLOT = 'currentPalette/ADD_SLOT';
 
 const initialState = {};
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case ADD_COLOR:
+      return {
+        ...state,
+        slots: state.slots.map((slot, index) => {
+          if (index !== action.slotIndex) {
+            return slot;
+          }
+          return {
+            ...slot,
+            colors: [...slot.colors, action.color],
+          };
+        }),
+      };
+
+    case ADD_SLOT:
+      return {
+        ...state,
+        slots: [
+          ...state.slots,
+          {
+            role: 'accent',
+            colors: [action.color],
+          },
+        ],
+      };
+
     case PALETTE_LOADING_STARTED:
       return {};
 
     case PALETTE_LOADED:
-      const { palette } = action;
+      const { name, slots } = action;
+
       return {
         ...state,
-        palette,
-        slots: [
-          {
-            role: 'background',
-            indices: [0, 1, 2, 3],
-          },
-          {
-            role: 'foreground',
-            indices: [4, 5, 6, 7],
-          },
-          {
-            role: 'accent',
-            indices: [8],
-          },
-          {
-            role: 'accent',
-            indices: [9],
-          },
-          {
-            role: 'accent',
-            indices: [10],
-          },
-          {
-            role: 'accent',
-            indices: [11],
-          },
-          {
-            role: 'accent',
-            indices: [12],
-          },
-          {
-            role: 'accent',
-            indices: [13],
-          },
-          {
-            role: 'accent',
-            indices: [14],
-          },
-          {
-            role: 'accent',
-            indices: [15],
-          },
-        ],
+        name,
+        slots,
       };
 
     case FORCE_FIELD_UPDATED:
@@ -81,6 +69,21 @@ export default (state = initialState, action) => {
     default:
       return state;
   }
+};
+
+export const addColor = (slotIndex, color) => dispatch => {
+  dispatch({
+    type: ADD_COLOR,
+    slotIndex,
+    color,
+  });
+};
+
+export const addSlot = color => dispatch => {
+  dispatch({
+    type: ADD_SLOT,
+    color,
+  });
 };
 
 export const loadBase16Palette = ({ name, url }) => async dispatch => {
@@ -102,13 +105,29 @@ export const loadBase16Palette = ({ name, url }) => async dispatch => {
     BASE_COLORS_COUNT + ACCENT_COLORS_COUNT
   );
 
+  const slots = [];
+
+  slots.push({
+    role: 'background',
+    colors: base.slice(0, 4),
+  });
+
+  slots.push({
+    role: 'foreground',
+    colors: base.slice(4, 8),
+  });
+
+  accents.forEach(a =>
+    slots.push({
+      role: 'accent',
+      colors: [a],
+    })
+  );
+
   dispatch({
     type: PALETTE_LOADED,
-    palette: {
-      name,
-      base,
-      accents,
-    },
+    name,
+    slots,
   });
 
   return;

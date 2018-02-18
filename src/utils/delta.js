@@ -1,8 +1,14 @@
 import { getDeltaE00 } from 'delta-e';
 import { lab } from 'd3-color';
 
-export default function delta(color, color2) {
-  return getDeltaE00(toLab(color), toLab(color2));
+const cache = {};
+
+export default function delta(c1, c2) {
+  const key = c1 + c2;
+  if (!cache[key]) {
+    cache[key] = getDeltaE00(toLab(c1), toLab(c2));
+  }
+  return cache[key];
 }
 
 function toLab(color) {

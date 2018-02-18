@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loadBase16Palette } from '../../modules/currentPalette';
+import {
+  loadBase16Palette,
+  addColor,
+  addSlot,
+} from '../../modules/currentPalette';
 
 import SwatchLine from '../../presentational/SwatchLine';
 import ColorSpace from '../../presentational/ColorSpace';
@@ -25,13 +29,13 @@ class Home extends Component {
 
   updateStyles() {
     const { style } = document.documentElement;
-    const { all } = this.props;
+    const { base } = this.props;
 
-    if (!all) {
+    if (!base) {
       return;
     }
 
-    all.forEach((color, i) => {
+    base.forEach((color, i) => {
       style.setProperty('--color' + i, color);
     });
   }
@@ -43,22 +47,45 @@ class Home extends Component {
   }
 
   render() {
-    const { currentPalette, all } = this.props;
+    const {
+      currentPalette,
+      all,
+      accents,
+      base,
+      addColor,
+      addSlot,
+    } = this.props;
     if (!currentPalette || !all) {
       return null;
     }
 
-    const { palette, forceField, slots } = currentPalette;
+    const { slots, forceField } = currentPalette;
 
     if (!all) {
       return null;
     }
 
+    const background = slots[0].colors[0];
+    const foreground = slots[1].colors[3];
+    const textColors = [background, foreground];
+
+    const uiContext = {
+      textColors,
+      background,
+      foreground,
+    };
+
     return (
       <div className="Home">
-        <SwatchLine colors={palette.base} textColors={palette.base} />
-        <SwatchLine colors={palette.accents} textColors={palette.base} />
-        <Slots colors={all} slots={slots} textColors={palette.base} />
+        <SwatchLine colors={accents} uiContext={uiContext} />
+        <SwatchLine colors={base} uiContext={uiContext} />
+        <Slots
+          colors={all}
+          slots={slots}
+          uiContext={uiContext}
+          addColor={addColor}
+          addSlot={addSlot}
+        />
         {forceField && <ForceField forceField={forceField} />}
         <ColorSpace colors={all} />
         <CodeExample colors={all} />
@@ -78,10 +105,9 @@ Home.propTypes = {
 };
 
 const mapStateToProps = ({ currentPalette, router, paletteList }) => {
-  console.log('MSTP');
   const palette = router.location.pathname.slice('/palette/'.length);
   const paletteInfo = paletteList.paletteUrls[palette];
-  if (!currentPalette.palette) {
+  if (!currentPalette.name) {
     if (paletteInfo) {
       return { loadPalette: paletteInfo };
     } else {
@@ -89,18 +115,30 @@ const mapStateToProps = ({ currentPalette, router, paletteList }) => {
     }
   }
 
-  if (paletteInfo.name !== currentPalette.palette.name) {
+  if (paletteInfo.name !== currentPalette.name) {
     return { loadPalette: paletteInfo };
   }
 
-  const { base, accents } = currentPalette.palette;
+  const all = [];
+  const base = [];
+  const accents = [];
+  currentPalette.slots.forEach(slot => {
+    if (slot.role === 'accent') {
+      accents.push(...slot.colors);
+    } else {
+      base.push(...slot.colors);
+    }
+  });
+
   return {
     currentPalette,
-    all: base.concat(accents),
+    all,
+    accents,
+    base,
   };
 };
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ loadBase16Palette }, dispatch);
+  bindActionCreators({ loadBase16Palette, addColor, addSlot }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

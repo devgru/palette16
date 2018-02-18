@@ -1,0 +1,13 @@
+.Slot {
+  stroke-width: 0.5;
+
+  font-family: monospace;
+}
+
+.Slot:hover {
+  stroke-width: 3;
+}
+
+.SlotPlaceholder {
+  pointer-events: all;
+}
