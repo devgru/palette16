@@ -1,0 +1,12 @@
+.Home {
+  display: flex;
+  width: 100%;
+}
+
+.Home-body {
+  width: calc(100% - 250px);
+}
+
+.Home-side {
+  width: 250px;
+}

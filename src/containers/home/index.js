@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
-  loadBase16Palette,
   addColor,
   addSlot,
+  buildSlotsFromPalette,
 } from '../../modules/currentPalette';
 
 import SwatchLine from '../../presentational/SwatchLine';
@@ -14,11 +15,9 @@ import ForceField from '../../presentational/ForceField';
 import CodeExample from '../../presentational/CodeExample';
 import Slots from '../../presentational/Slots';
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
-  }
+import './index.css';
 
+class Home extends Component {
   componentDidMount() {
     this.updateStyles();
   }
@@ -40,13 +39,7 @@ class Home extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.loadPalette) {
-      nextProps.loadBase16Palette(nextProps.loadPalette);
-    }
-  }
-
-  render() {
+  getBody() {
     const {
       currentPalette,
       all,
@@ -55,14 +48,15 @@ class Home extends Component {
       addColor,
       addSlot,
     } = this.props;
+
     if (!currentPalette || !all) {
-      return null;
+      return <div className="Home-body" />;
     }
 
     const { slots, forceField } = currentPalette;
 
     if (!all) {
-      return null;
+      return <div className="Home-body" />;
     }
 
     const background = slots[0].colors[0];
@@ -76,7 +70,7 @@ class Home extends Component {
     };
 
     return (
-      <div className="Home">
+      <div className="Home-body">
         <SwatchLine colors={accents} uiContext={uiContext} />
         <SwatchLine colors={base} uiContext={uiContext} />
         <Slots
@@ -92,6 +86,26 @@ class Home extends Component {
       </div>
     );
   }
+
+  render() {
+    const { palettes } = this.props;
+
+    return (
+      <div className="Home">
+        {this.getBody()}
+        <div className="Home-side">
+          <h2>Palettes</h2>
+          <ul>
+            {Object.keys(palettes).map(name => (
+              <li key={name}>
+                <Link to={'/palette/' + name}>{name}</Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
 }
 
 Home.propTypes = {
@@ -104,20 +118,17 @@ Home.propTypes = {
   }),
 };
 
-const mapStateToProps = ({ currentPalette, router, paletteList }) => {
-  const palette = router.location.pathname.slice('/palette/'.length);
-  const paletteInfo = paletteList.paletteUrls[palette];
-  if (!currentPalette.name) {
-    if (paletteInfo) {
-      return { loadPalette: paletteInfo };
-    } else {
-      return {};
-    }
+const mapStateToProps = ({ router, paletteList }) => {
+  const paletteKey = router.location.pathname.slice('/palette/'.length);
+  const palettes = paletteList.palettes;
+  const paletteInfo = palettes[paletteKey];
+  if (!paletteInfo) {
+    return {
+      palettes,
+    };
   }
 
-  if (paletteInfo.name !== currentPalette.name) {
-    return { loadPalette: paletteInfo };
-  }
+  const currentPalette = buildSlotsFromPalette(paletteInfo);
 
   const all = [];
   const base = [];
@@ -135,10 +146,11 @@ const mapStateToProps = ({ currentPalette, router, paletteList }) => {
     all,
     accents,
     base,
+    palettes,
   };
 };
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ loadBase16Palette, addColor, addSlot }, dispatch);
+  bindActionCreators({ addColor, addSlot }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -6,8 +6,6 @@ import delta from '../utils/delta';
 import generateForceFieldLinks from '../utils/generateForceFieldLinks';
 import runForceFieldSimulation from '../utils/runForceFieldSimulation';
 
-import fetchYaml from '../utils/fetchYaml';
-
 export const PALETTE_LOADING_STARTED = 'currentPalette/PALETTE_LOADING_STARTED';
 export const PALETTE_LOADED = 'currentPalette/PALETTE_LOADED';
 export const FORCE_FIELD_UPDATED = 'currentPalette/FORCE_FIELD_UPDATED';
@@ -85,20 +83,14 @@ export const addSlot = color => dispatch => {
     color,
   });
 };
+const BASE_COLORS_COUNT = 8;
+const ACCENT_COLORS_COUNT = 8;
 
-export const loadBase16Palette = ({ name, url }) => async dispatch => {
-  dispatch({
-    type: PALETTE_LOADING_STARTED,
-  });
-
-  const palette = await fetchYaml(url);
-
+export const buildSlotsFromPalette = function(palette) {
   const all = range(0, 16).map(
     n => '#' + palette['base0' + n.toString(16).toUpperCase()]
   );
 
-  const BASE_COLORS_COUNT = 8;
-  const ACCENT_COLORS_COUNT = 8;
   const base = all.slice(0, BASE_COLORS_COUNT);
   const accents = all.slice(
     BASE_COLORS_COUNT,
@@ -123,6 +115,17 @@ export const loadBase16Palette = ({ name, url }) => async dispatch => {
       colors: [a],
     })
   );
+  return { all, slots };
+};
+export const loadBase16Palette = paletteKey => async (dispatch, getState) => {
+  dispatch({
+    type: PALETTE_LOADING_STARTED,
+  });
+  const name = paletteKey;
+
+  const palette = getState().paletteList.palettes[paletteKey];
+
+  const { all, slots } = buildSlotsFromPalette(palette);
 
   dispatch({
     type: PALETTE_LOADED,

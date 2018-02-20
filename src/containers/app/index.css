@@ -8,11 +8,3 @@
 a {
   color: var(--color7);
 }
-
-.App-body {
-  width: calc(100% - 250px);
-}
-
-.App-side {
-  width: 250px;
-}
