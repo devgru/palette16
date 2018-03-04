@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import {
   addColor,
   addSlot,
-  buildSlotsFromPalette,
+  loadBase16Palette,
 } from '../../modules/currentPalette';
 
 import SwatchLine from '../../presentational/SwatchLine';
@@ -18,12 +18,26 @@ import Slots from '../../presentational/Slots';
 import './index.css';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.loadPalette(props);
+  }
   componentDidMount() {
     this.updateStyles();
   }
 
   componentDidUpdate() {
     this.updateStyles();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.loadPalette(nextProps);
+  }
+
+  loadPalette (props) {
+    if (props.loadPalette) {
+      props.loadBase16Palette(props.loadPalette);
+    }
   }
 
   updateStyles() {
@@ -118,7 +132,7 @@ Home.propTypes = {
   }),
 };
 
-const mapStateToProps = ({ router, paletteList }) => {
+const mapStateToProps = ({ router, paletteList, currentPalette }) => {
   const paletteKey = router.location.pathname.slice('/palette/'.length);
   const palettes = paletteList.palettes;
   const paletteInfo = palettes[paletteKey];
@@ -128,7 +142,12 @@ const mapStateToProps = ({ router, paletteList }) => {
     };
   }
 
-  const currentPalette = buildSlotsFromPalette(paletteInfo);
+  if (!currentPalette.slots) {
+    return {
+      palettes,
+      loadPalette: paletteKey,
+    }
+  }
 
   const all = [];
   const base = [];
@@ -151,6 +170,6 @@ const mapStateToProps = ({ router, paletteList }) => {
 };
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ addColor, addSlot }, dispatch);
+  bindActionCreators({ addColor, addSlot, loadBase16Palette }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
