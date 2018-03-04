@@ -32,7 +32,7 @@ function temperature(color) {
   return C === '0'
     ? undefined
     : H < RED_HUE || H > BLUE_HUE
-      ? 'non-spectral chromatic'
+      ? 'non-spectral'
       : H < 143.95 ? 'warm' : 'cold';
 }
 
