@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import Download from 'js-file-download';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -34,7 +35,7 @@ class Home extends Component {
     this.loadPalette(nextProps);
   }
 
-  loadPalette (props) {
+  loadPalette(props) {
     if (props.loadPalette) {
       props.loadBase16Palette(props.loadPalette);
     }
@@ -101,6 +102,14 @@ class Home extends Component {
     );
   }
 
+  save() {
+    Download(
+      JSON.stringify(this.props.currentPalette, null, 2),
+      'palette.json',
+      'application/json'
+    );
+  }
+
   render() {
     const { palettes } = this.props;
 
@@ -108,6 +117,10 @@ class Home extends Component {
       <div className="Home">
         {this.getBody()}
         <div className="Home-side">
+          <h2>Current palette</h2>
+          <ul>
+            <li onClick={() => this.save()}>Save</li>
+          </ul>
           <h2>Palettes</h2>
           <ul>
             {Object.keys(palettes).map(name => (
@@ -146,7 +159,7 @@ const mapStateToProps = ({ router, paletteList, currentPalette }) => {
     return {
       palettes,
       loadPalette: paletteKey,
-    }
+    };
   }
 
   const all = [];

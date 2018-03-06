@@ -19,6 +19,7 @@
     "delta-e": "^0.0.7",
     "get-contrast": "^2.0.0",
     "husky": "^0.15.0-rc.8",
+    "js-file-download": "^0.4.1",
     "js-yaml": "^3.10.0",
     "lint-staged": "^6.1.0",
     "lodash.flatten": "^4.4.0",
