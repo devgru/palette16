@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Download from 'js-file-download';
+import Dropzone from 'react-dropzone';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -8,6 +9,7 @@ import {
   addColor,
   addSlot,
   loadBase16Palette,
+  loadCustomPalette,
 } from '../../modules/currentPalette';
 
 import SwatchLine from '../../presentational/SwatchLine';
@@ -34,6 +36,21 @@ class Home extends Component {
   componentWillReceiveProps(nextProps) {
     this.loadPalette(nextProps);
   }
+
+  onDrop = ([file]) => {
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const string = reader.result;
+      const object = JSON.parse(string);
+      this.props.loadCustomPalette(object);
+    };
+
+    reader.readAsBinaryString(file);
+  };
 
   loadPalette(props) {
     if (props.loadPalette) {
@@ -85,20 +102,22 @@ class Home extends Component {
     };
 
     return (
-      <div className="Home-body">
-        <SwatchLine colors={accents} uiContext={uiContext} />
-        <SwatchLine colors={base} uiContext={uiContext} />
-        <Slots
-          colors={all}
-          slots={slots}
-          uiContext={uiContext}
-          addColor={addColor}
-          addSlot={addSlot}
-        />
-        {forceField && <ForceField forceField={forceField} />}
-        <ColorSpace colors={all} />
-        <CodeExample colors={all} />
-      </div>
+      <Dropzone onDrop={this.onDrop} style={{}} disableClick>
+        <div className="Home-body">
+          <SwatchLine colors={accents} uiContext={uiContext} />
+          <SwatchLine colors={base} uiContext={uiContext} />
+          <Slots
+            colors={all}
+            slots={slots}
+            uiContext={uiContext}
+            addColor={addColor}
+            addSlot={addSlot}
+          />
+          {forceField && <ForceField forceField={forceField} />}
+          <ColorSpace colors={all} />
+          <CodeExample colors={all} />
+        </div>
+      </Dropzone>
     );
   }
 
@@ -162,7 +181,6 @@ const mapStateToProps = ({ router, paletteList, currentPalette }) => {
     };
   }
 
-  const all = [];
   const base = [];
   const accents = [];
   currentPalette.slots.forEach(slot => {
@@ -172,6 +190,8 @@ const mapStateToProps = ({ router, paletteList, currentPalette }) => {
       base.push(...slot.colors);
     }
   });
+
+  const all = base.concat(accents);
 
   return {
     currentPalette,
@@ -183,6 +203,9 @@ const mapStateToProps = ({ router, paletteList, currentPalette }) => {
 };
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ addColor, addSlot, loadBase16Palette }, dispatch);
+  bindActionCreators(
+    { addColor, addSlot, loadBase16Palette, loadCustomPalette },
+    dispatch
+  );
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

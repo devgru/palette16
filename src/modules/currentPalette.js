@@ -166,3 +166,9 @@ export const loadBase16Palette = paletteKey => async (dispatch, getState) => {
     });
   }
 };
+export const loadCustomPalette = palette => dispatch => {
+  dispatch({
+    type: PALETTE_LOADED,
+    ...palette,
+  });
+};
