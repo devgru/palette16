@@ -102,21 +102,24 @@ class Home extends Component {
     };
 
     return (
-      <Dropzone onDrop={this.onDrop} style={{}} disableClick>
-        <div className="Home-body">
-          <SwatchLine colors={accents} uiContext={uiContext} />
-          <SwatchLine colors={base} uiContext={uiContext} />
-          <Slots
-            colors={all}
-            slots={slots}
-            uiContext={uiContext}
-            addColor={addColor}
-            addSlot={addSlot}
-          />
-          {forceField && <ForceField forceField={forceField} />}
-          <ColorSpace colors={all} />
-          <CodeExample colors={all} />
-        </div>
+      <Dropzone
+        className="Home-body"
+        onDrop={this.onDrop}
+        style={{}}
+        disableClick
+      >
+        <SwatchLine colors={accents} uiContext={uiContext} />
+        <SwatchLine colors={base} uiContext={uiContext} />
+        <Slots
+          colors={all}
+          slots={slots}
+          uiContext={uiContext}
+          addColor={addColor}
+          addSlot={addSlot}
+        />
+        {forceField && <ForceField forceField={forceField} />}
+        <ColorSpace colors={all} />
+        <CodeExample colors={all} />
       </Dropzone>
     );
   }
@@ -174,7 +177,7 @@ const mapStateToProps = ({ router, paletteList, currentPalette }) => {
     };
   }
 
-  if (!currentPalette.slots) {
+  if (!currentPalette.slots || currentPalette.name !== paletteKey) {
     return {
       palettes,
       loadPalette: paletteKey,
