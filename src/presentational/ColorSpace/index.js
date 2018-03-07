@@ -61,7 +61,7 @@ class ColorSpace extends Component {
           mainCamera="camera"
           width={width}
           height={height}
-          clearColor={0xeeeeee}
+          clearColor={colors[0]}
           forceManualRender
           onManualRenderTriggerCreated={this.onManualRenderTriggerCreated}
         >
