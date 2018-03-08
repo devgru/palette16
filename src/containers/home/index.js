@@ -13,6 +13,7 @@ import {
 } from '../../modules/currentPalette';
 
 import SwatchLine from '../../presentational/SwatchLine';
+import HueCircle from '../../presentational/HueCircle';
 import ColorSpace from '../../presentational/ColorSpace';
 import ForceField from '../../presentational/ForceField';
 import CodeExample from '../../presentational/CodeExample';
@@ -108,8 +109,9 @@ class Home extends Component {
         style={{}}
         disableClick
       >
-        <SwatchLine colors={accents} uiContext={uiContext} />
         <SwatchLine colors={base} uiContext={uiContext} />
+        <SwatchLine colors={accents} uiContext={uiContext} />
+        <HueCircle colors={accents} uiContext={uiContext} />
         <Slots
           colors={all}
           slots={slots}
