@@ -9,28 +9,9 @@ const R = 256 * 256;
 const G = 256;
 const B = 1;
 
-const axisX = new THREE.Vector3(1, 0, 0);
-const axisY = new THREE.Vector3(0, 1, 0);
-const axisZ = new THREE.Vector3(0, 0, 1);
-const angleX = -Math.PI / 4;
-const angleY = -Math.PI / 4;
-const angleZ = Math.atan(1 / Math.sqrt(2));
-
-function rgbTransform(x) {
-  return 0.466 * x - 59.5;
-}
-
-function calcRgbTarget(color) {
-  const { r, g, b } = rgb(color);
-  return new THREE.Vector3(rgbTransform(r), rgbTransform(g), rgbTransform(b))
-    .applyAxisAngle(axisX, angleX)
-    .applyAxisAngle(axisZ, angleZ)
-    .applyAxisAngle(axisY, angleY);
-}
-
 function calcLabTarget(color) {
   const { l, a, b } = lab(color);
-  return new THREE.Vector3(b, 1.0306 * (-100 + 2 * l), a);
+  return new THREE.Vector3(b, 1.0306 * (-100 + 2 * l), -a);
 }
 
 function numberToHex(i) {
