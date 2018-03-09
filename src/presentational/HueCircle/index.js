@@ -34,7 +34,7 @@ class HueCircle extends Component {
               <Tick key={i} tick={tick} r={r} size={TICK_SIZE} />
             ))}
             {colors.map((color, i) => {
-              const h = hcl(color).h;
+              const { h } = hcl(color);
               return (
                 <circle
                   key={i}
