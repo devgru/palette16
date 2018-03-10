@@ -4,6 +4,7 @@ import Download from 'js-file-download';
 import Dropzone from 'react-dropzone';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 import { Link } from 'react-router-dom';
 import {
   addColor,
@@ -48,6 +49,7 @@ class Home extends Component {
       const string = reader.result;
       const object = JSON.parse(string);
       this.props.loadCustomPalette(object);
+      this.props.history.push(`/palette/${object.name}`);
     };
 
     reader.readAsBinaryString(file);
@@ -83,13 +85,27 @@ class Home extends Component {
     } = this.props;
 
     if (!currentPalette || !all) {
-      return <div className="Home-body" />;
+      return (
+        <Dropzone
+          className="Home-body"
+          onDrop={this.onDrop}
+          style={{}}
+          disableClick
+        />
+      );
     }
 
     const { slots, forceField } = currentPalette;
 
     if (!all) {
-      return <div className="Home-body" />;
+      return (
+        <Dropzone
+          className="Home-body"
+          onDrop={this.onDrop}
+          style={{}}
+          disableClick
+        />
+      );
     }
 
     const background = slots[0].colors[0];
@@ -172,12 +188,13 @@ Home.propTypes = {
 const mapStateToProps = ({ router, paletteList, currentPalette }) => {
   const paletteKey = router.location.pathname.slice('/palette/'.length);
   const palettes = paletteList.palettes;
-  const paletteInfo = palettes[paletteKey];
-  if (!paletteInfo) {
+  if (!currentPalette) {
     return {
       palettes,
     };
   }
+
+  debugger;
 
   if (!currentPalette.slots || currentPalette.name !== paletteKey) {
     return {
@@ -213,4 +230,4 @@ const mapDispatchToProps = dispatch =>
     dispatch
   );
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Home));

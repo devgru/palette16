@@ -124,6 +124,7 @@ export const loadBase16Palette = paletteKey => async (dispatch, getState) => {
   const name = paletteKey;
 
   const palette = getState().paletteList.palettes[paletteKey];
+  if (!palette) return;
 
   const { all, slots } = buildSlotsFromPalette(palette);
 
