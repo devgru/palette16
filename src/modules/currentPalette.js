@@ -10,6 +10,7 @@ export const PALETTE_LOADING_STARTED = 'currentPalette/PALETTE_LOADING_STARTED';
 export const PALETTE_LOADED = 'currentPalette/PALETTE_LOADED';
 export const FORCE_FIELD_UPDATED = 'currentPalette/FORCE_FIELD_UPDATED';
 export const ADD_COLOR = 'currentPalette/ADD_COLOR';
+export const SELECT_COLOR = 'currentPalette/SELECT_COLOR';
 export const ADD_SLOT = 'currentPalette/ADD_SLOT';
 
 const initialState = {};
@@ -40,6 +41,12 @@ export default (state = initialState, action) => {
             colors: [action.color],
           },
         ],
+      };
+
+    case SELECT_COLOR:
+      return {
+        ...state,
+        selectedColor: action.selectedColor,
       };
 
     case PALETTE_LOADING_STARTED:
@@ -171,5 +178,11 @@ export const loadCustomPalette = palette => dispatch => {
   dispatch({
     type: PALETTE_LOADED,
     ...palette,
+  });
+};
+export const selectColor = selectedColor => dispatch => {
+  dispatch({
+    type: SELECT_COLOR,
+    selectedColor,
   });
 };

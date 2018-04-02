@@ -194,8 +194,6 @@ const mapStateToProps = ({ router, paletteList, currentPalette }) => {
     };
   }
 
-  debugger;
-
   if (!currentPalette.slots || currentPalette.name !== paletteKey) {
     return {
       palettes,

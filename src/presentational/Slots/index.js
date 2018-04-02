@@ -1,10 +1,13 @@
 import React from 'react';
 import { max } from 'd3-array';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import rectircle from '../../utils/rectircle';
 import farthestOf from '../../utils/farthestOf';
 
 import './index.css';
+import { selectColor } from '../../modules/currentPalette';
 
 const SIZE = 60;
 
@@ -16,7 +19,14 @@ const HEIGHT = SIZE + Y_STEP * 2;
 const PLUS_DY = 18;
 const COLOR_DY = 28;
 
-const Slots = ({ colors, slots, addColor, addSlot, uiContext }) => {
+const Slots = ({
+  colors,
+  slots,
+  addColor,
+  addSlot,
+  uiContext,
+  selectColor,
+}) => {
   const { textColors, foreground } = uiContext;
 
   const maxSlots = max(slots, ({ colors }) => colors.length);
@@ -42,6 +52,7 @@ const Slots = ({ colors, slots, addColor, addSlot, uiContext }) => {
                     transform={`translate(${X_STEP}, ${Y_STEP +
                       j * (height + Y_STEP * 2)})`}
                     className="Slot"
+                    onClick={() => selectColor([i, j])}
                   >
                     <path
                       d={rectircle(SIZE, height)}
@@ -110,4 +121,9 @@ const Slots = ({ colors, slots, addColor, addSlot, uiContext }) => {
   );
 };
 
-export default Slots;
+const mapStateToProps = () => ({});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ selectColor }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Slots);
