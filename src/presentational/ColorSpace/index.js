@@ -42,6 +42,10 @@ class ColorSpace extends Component {
     renderScene();
   };
 
+  componentDidUpdate() {
+    this.state.renderScene();
+  }
+
   render() {
     const width = 200;
     const height = 200;

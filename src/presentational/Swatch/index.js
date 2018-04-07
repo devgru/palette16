@@ -2,7 +2,7 @@ import React from 'react';
 import objectMap from 'object-map';
 import { rgb, hcl } from 'd3-color';
 import round from 'round-to-precision';
-import closestColor from '../../utils/closestColor';
+import closestColorName from '../../utils/closestColorName';
 
 import './index.css';
 
@@ -43,7 +43,7 @@ function propertyOf(color) {
 const properties = [lightness, chromatic, temperature];
 
 const Swatch = ({ background, color }) => {
-  const name = closestColor(background);
+  const name = closestColorName(background);
 
   const hclC = hcl(background);
   const rgbC = rgb(background);

@@ -11,9 +11,19 @@ export const PALETTE_LOADED = 'currentPalette/PALETTE_LOADED';
 export const FORCE_FIELD_UPDATED = 'currentPalette/FORCE_FIELD_UPDATED';
 export const ADD_COLOR = 'currentPalette/ADD_COLOR';
 export const SELECT_COLOR = 'currentPalette/SELECT_COLOR';
+export const MODIFY_CURRENT_COLOR = 'currentPalette/MODIFY_CURRENT_COLOR';
 export const ADD_SLOT = 'currentPalette/ADD_SLOT';
 
 const initialState = {};
+
+function componentToHex(c) {
+  const hex = c.toString(16);
+  return hex.length === 1 ? '0' + hex : hex;
+}
+
+function rgbToHex({r, g, b}) {
+  return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -47,6 +57,37 @@ export default (state = initialState, action) => {
       return {
         ...state,
         selectedColor: action.selectedColor,
+      };
+
+    case MODIFY_CURRENT_COLOR:
+      const { selectedColor } = state;
+      if (!selectedColor) {
+        return state;
+      }
+
+      return {
+        ...state,
+        slots: state.slots.map((slot, i) => {
+          if (i !== selectedColor[0]) {
+            return slot;
+          }
+
+          return {
+            ...slot,
+            colors: slot.colors.map((color, j) => {
+              if (j !== selectedColor[1]) {
+                return color;
+              }
+              const rgbColor = rgb(color);
+              const { component, change } = action;
+              rgbColor[component] = Math.min(
+                255,
+                Math.max(0, rgbColor[component] + change)
+              );
+              return rgbToHex(rgbColor);
+            }),
+          };
+        }),
       };
 
     case PALETTE_LOADING_STARTED:
@@ -184,5 +225,12 @@ export const selectColor = selectedColor => dispatch => {
   dispatch({
     type: SELECT_COLOR,
     selectedColor,
+  });
+};
+export const modifyCurrentColor = (component, change) => dispatch => {
+  dispatch({
+    type: MODIFY_CURRENT_COLOR,
+    component,
+    change,
   });
 };
