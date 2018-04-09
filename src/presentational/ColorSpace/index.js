@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 import OrbitControls from 'three-orbit-controls';
-import { rgb } from 'd3-color';
+import { rgb, lab } from 'd3-color';
+import uniqBy from 'lodash.uniqby';
+
 import generatePoints from '../../utils/generatePoints';
 import createPoint from '../../utils/createPoint';
-import uniqBy from 'lodash.uniqby';
+import calcLabTarget from '../../utils/calcLabTarget';
+import toHex from '../../utils/toHex';
 
 import './index.css';
 
@@ -52,10 +55,7 @@ class ColorSpace extends Component {
     const { backgroundPoints } = this.state;
     const { colors } = this.props;
 
-    const palettePoints = colors.map(color => {
-      const { r, g, b } = rgb(color);
-      return createPoint(r, g, b);
-    });
+    const palettePoints = colors.map(color => createPoint(rgb(color)));
 
     const uniqPoints = uniqBy(palettePoints, a => a.key);
 

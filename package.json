@@ -25,6 +25,7 @@
     "lodash.flatten": "^4.4.0",
     "lodash.maxby": "^4.6.0",
     "lodash.uniqby": "^4.7.0",
+    "numeric": "^1.2.6",
     "object-map": "^1.0.2",
     "prettier": "^1.10.2",
     "prop-types": "^15.6.0",

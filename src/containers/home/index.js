@@ -20,6 +20,8 @@ import ForceField from '../../presentational/ForceField';
 import CodeExample from '../../presentational/CodeExample';
 import Slots from '../../presentational/Slots';
 
+import fitPlane from '../../utils/fitPlane';
+
 import './index.css';
 
 class Home extends Component {
@@ -84,6 +86,8 @@ class Home extends Component {
       addSlot,
     } = this.props;
 
+    const plane = fitPlane(accents);
+
     if (!currentPalette || !all) {
       return (
         <Dropzone
@@ -136,7 +140,7 @@ class Home extends Component {
           addSlot={addSlot}
         />
         {forceField && <ForceField forceField={forceField} />}
-        <ColorSpace colors={all} />
+        <ColorSpace colors={all} plane={plane} />
         <CodeExample colors={all} />
       </Dropzone>
     );

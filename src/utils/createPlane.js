@@ -7,7 +7,7 @@ const cubeSpace = 4;
 const cubeRatio = 2;
 const pointSize = cubeSpace / cubeRatio;
 
-export default function createPoint(color, a = 1) {
+export default function createPlane(color, a = 1) {
   const colorHex = toHex(color);
   const position = calcLabTarget(color);
 
