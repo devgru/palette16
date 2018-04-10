@@ -53,11 +53,15 @@ class ColorSpace extends Component {
     const width = 200;
     const height = 200;
     const { backgroundPoints } = this.state;
-    const { colors } = this.props;
+    const { colors, plane } = this.props;
 
     const palettePoints = colors.map(color => createPoint(rgb(color)));
 
+    const { centroid } = plane;
+    const planeCentroidColor = lab(...centroid);
+
     const uniqPoints = uniqBy(palettePoints, a => a.key);
+    console.log('ZZZ', toHex(planeCentroidColor), plane);
 
     return (
       <div className="ColorSpace" ref={ref => (this.ref = ref)}>
@@ -79,6 +83,18 @@ class ColorSpace extends Component {
               far={10000}
               position={this.cameraPosition}
             />
+            <mesh
+              position={calcLabTarget(planeCentroidColor)}
+              rotation={THREE.Euler(Math.PI / 4, Math.PI / 4, Math.PI / 4)}
+            >
+              <circleGeometry radius={50} />
+              <meshBasicMaterial
+                transparent
+                opacity={1}
+                color={toHex(planeCentroidColor)}
+                side={THREE.DoubleSide}
+              />
+            </mesh>
             {backgroundPoints}
             {uniqPoints}
           </scene>
