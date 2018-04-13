@@ -6,7 +6,7 @@ const cache = {};
 export default function delta(c1, c2) {
   const key = c1 + c2;
   if (!cache[key]) {
-    cache[key] = getDeltaE00(toLab(c1), toLab(c2));
+    cache[key] = cache[c2 + c1] = getDeltaE00(toLab(c1), toLab(c2));
   }
   return cache[key];
 }
