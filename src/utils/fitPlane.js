@@ -1,35 +1,40 @@
-import {lab} from 'd3-color';
-import {mean} from 'd3-array';
-import {svd} from 'numeric';
-import calcLabTarget from './calcLabTarget';
+import { Vector3 } from 'three';
+import { svd } from 'numeric';
+import { lab } from 'd3-color';
+import colorToVector3 from './colorToVector3';
+import meanObject from './meanObject';
 
 export default function fitPlane(accents) {
   if (!accents) {
     return;
   }
-  const labs = accents.map(color => {
-    const {x, y, z} = calcLabTarget(color);
-    return [x, y, z];
-  });
-  const centroid = [
-    mean(labs, z => z[0]),
-    mean(labs, z => z[1]),
-    mean(labs, z => z[2])
-  ];
-  const relative = labs.map(([x, y, z]) => [
-    x - centroid[0],
-    y - centroid[1],
-    z - centroid[2],
+
+  const labs = accents.map(color => lab(color));
+  const { l, a, b } = meanObject(['l', 'a', 'b'], labs);
+  const color = lab(l, a, b);
+
+  const colorPoints = accents.map(colorToVector3);
+  const centroidObject = meanObject(['x', 'y', 'z'], colorPoints);
+  const centroid = new Vector3(
+    centroidObject.x,
+    centroidObject.y,
+    centroidObject.z
+  );
+  const relativePoints = colorPoints.map(({ x, y, z }) => [
+    x - centroid.x,
+    y - centroid.y,
+    z - centroid.z,
   ]);
-  const wtf = svd(relative);
-  const normal = [
-    wtf.V[0][2],
-    wtf.V[1][2],
-    wtf.V[2][2],
-  ];
+
+  // using SVD is suggested here https://math.stackexchange.com/a/99317
+  // they suggest using 3 × N matrix, but numeric library supports only N × 3
+  // so instead of U (left singular vector) we refer to V (right one)
+  const { V } = svd(relativePoints);
+  const normal = new Vector3(...V.map(([_a, _b, c]) => c));
 
   return {
     centroid,
     normal,
+    color,
   };
 }

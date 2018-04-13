@@ -1,6 +1,6 @@
 // noinspection JSSuspiciousNameCombination
 // Like squircle, but rectangular.
-const Rectircle = (width, height = width) => {
+export default function rectircle(width, height = width) {
   const size = Math.min(width, height);
 
   const c = size / 60;
@@ -28,6 +28,4 @@ const Rectircle = (width, height = width) => {
     `C ${width},${c} ${width - c},0 ${hCenter + hDiff},0`, // h
     'Z',
   ].join(' ');
-};
-
-export default Rectircle;
+}

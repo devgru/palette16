@@ -1,15 +1,14 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 import OrbitControls from 'three-orbit-controls';
-import {rgb, lab} from 'd3-color';
+import { rgb, lab } from 'd3-color';
 import uniqBy from 'lodash.uniqby';
 
 import generatePoints from '../../utils/generatePoints';
-import createPoint from '../../utils/createPoint';
-import calcLabTarget from '../../utils/calcLabTarget';
-import toHex from '../../utils/toHex';
+import createPlaneMesh from '../../utils/createPlaneMesh';
+import createPoint from '../../utils/createPointMesh';
 
 import './index.css';
 
@@ -21,8 +20,7 @@ class ColorSpace extends Component {
 
     this.state = {
       backgroundPoints: generatePoints(),
-      renderScene: () => {
-      }
+      renderScene: () => {},
     };
   }
 
@@ -30,7 +28,7 @@ class ColorSpace extends Component {
     const Controls = OrbitControls(THREE);
     this.controls = new Controls(this.refs.camera, this.ref);
 
-    const renderScene = ({target}) => {
+    const renderScene = ({ target }) => {
       this.state.renderScene();
     };
     this.controls.addEventListener('start', renderScene);
@@ -44,7 +42,7 @@ class ColorSpace extends Component {
   }
 
   onManualRenderTriggerCreated = renderScene => {
-    this.setState({renderScene});
+    this.setState({ renderScene });
     renderScene();
   };
 
@@ -53,27 +51,17 @@ class ColorSpace extends Component {
   }
 
   render() {
-    const width = 200;
-    const height = 200;
-    const {backgroundPoints} = this.state;
-    const {colors, plane} = this.props;
+    const width = 600;
+    const height = 600;
+    const { backgroundPoints } = this.state;
+    const { colors, plane } = this.props;
 
-    const palettePoints = colors.map(color => createPoint(rgb(color)));
-
-    const {centroid, normal} = plane;
-    const planeCentroidColor = lab(...centroid);
-
-    const m1 = new THREE.Matrix4();
-    const position = new THREE.Vector3(...centroid);
-    const fakePosition = new THREE.Vector3();
-    const n2 = new THREE.Vector3(...normal);
-    m1.lookAt(fakePosition, n2, new THREE.Vector3(0, 1, 0));
-    const quaternion = new THREE.Quaternion();
-    quaternion.setFromRotationMatrix(m1);
-    console.log(n2, m1, quaternion);
-
+    const palettePoints = colors.map(color => createPoint(rgb(color), 1));
+    const projectedPoints = colors.map(color =>
+      createPoint(rgb(color), 0.75, plane)
+    );
     const uniqPoints = uniqBy(palettePoints, a => a.key);
-    console.log('ZZZ', plane);
+    const uniqProjectedPoints = uniqBy(projectedPoints, a => a.key);
 
     return (
       <div className="ColorSpace" ref={ref => (this.ref = ref)}>
@@ -95,18 +83,10 @@ class ColorSpace extends Component {
               far={10000}
               position={this.cameraPosition}
             />
-            <line
-              key="circle"
-              quaternion={quaternion}
-              position={position}
-            >
-              <circleGeometry radius={50} />
-              <lineBasicMaterial
-                color={toHex(planeCentroidColor)}
-              />
-            </line>
+            {createPlaneMesh(plane, 'red')}
             {backgroundPoints}
             {uniqPoints}
+            {uniqProjectedPoints}
           </scene>
         </React3>
       </div>
@@ -115,7 +95,7 @@ class ColorSpace extends Component {
 }
 
 ColorSpace.propTypes = {
-  colors: PropTypes.arrayOf(PropTypes.string).isRequired
+  colors: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default ColorSpace;

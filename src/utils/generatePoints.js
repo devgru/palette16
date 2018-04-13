@@ -1,4 +1,4 @@
-import createPoint from './createPoint';
+import createPoint from './createPointMesh';
 import { rgb } from 'd3-color';
 
 const cubeItems = 5;
