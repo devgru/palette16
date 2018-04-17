@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React3 from 'react-three-renderer';
 import * as THREE from 'three';
 import OrbitControls from 'three-orbit-controls';
-import { rgb, lab } from 'd3-color';
+import { rgb } from 'd3-color';
 import uniqBy from 'lodash.uniqby';
 
 import generatePoints from '../../utils/generatePoints';
@@ -28,7 +28,7 @@ class ColorSpace extends Component {
     const Controls = OrbitControls(THREE);
     this.controls = new Controls(this.refs.camera, this.ref);
 
-    const renderScene = ({ target }) => {
+    const renderScene = () => {
       this.state.renderScene();
     };
     this.controls.addEventListener('start', renderScene);
@@ -54,11 +54,11 @@ class ColorSpace extends Component {
     const width = 600;
     const height = 600;
     const { backgroundPoints } = this.state;
-    const { colors, plane } = this.props;
+    const { colors, plane, accents } = this.props;
 
     const palettePoints = colors.map(color => createPoint(rgb(color), 1));
-    const projectedPoints = colors.map(color =>
-      createPoint(rgb(color), 0.75, plane)
+    const projectedPoints = accents.map(color =>
+      createPoint(rgb(color), 0.7, plane)
     );
     const uniqPoints = uniqBy(palettePoints, a => a.key);
     const uniqProjectedPoints = uniqBy(projectedPoints, a => a.key);

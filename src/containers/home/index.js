@@ -140,7 +140,7 @@ class Home extends Component {
           addSlot={addSlot}
         />
         {forceField && <ForceField forceField={forceField} />}
-        <ColorSpace colors={all} plane={plane} />
+        <ColorSpace colors={all} accents={accents} plane={plane} />
         <CodeExample colors={all} />
       </Dropzone>
     );
