@@ -55,7 +55,8 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css}": [
-      "prettier --single-quote --write --trailing-comma es5"
+      "prettier --single-quote --write --trailing-comma es5",
+      "git add"
     ]
   },
   "husky": {

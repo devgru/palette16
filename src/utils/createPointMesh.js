@@ -10,13 +10,7 @@ const pointSize = cubeSpace / cubeRatio;
 const projectToPlane = (point, plane) => {
   const { centroid, normal } = plane;
   point.sub(
-    normal.clone().multiplyScalar(
-      normal.dot(
-        point.clone().sub(
-          centroid
-        )
-      )
-    )
+    normal.clone().multiplyScalar(normal.dot(point.clone().sub(centroid)))
   );
 };
 
