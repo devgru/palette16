@@ -42,19 +42,18 @@ const properties = [lightness, chromatic, temperature];
 const Swatch = ({ background, color }) => {
   const name = closestColorName(background);
 
-  const hclColor = hcl(background);
+  const hclColor = objectMap(hcl(background), Math.round);
   const rgbColor = rgb(background);
 
-  const prettyHcl = objectMap(hclColor, Math.round);
-  if (prettyHcl.c === 0) prettyHcl.h = 'any';
+  if (hclColor.c === 0) hclColor.h = 'any';
 
   const description = properties
-    .map(propertyOf(prettyHcl))
+    .map(propertyOf(hclColor))
     .filter(Boolean)
     .join(', ');
 
   const { r, g, b } = rgbColor;
-  const { h, c, l } = prettyHcl;
+  const { h, c, l } = hclColor;
 
   return (
     <div
