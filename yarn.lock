@@ -6210,10 +6210,6 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^2.0.0"
     inherits "^2.0.1"
 
-round-to-precision@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/round-to-precision/-/round-to-precision-1.0.5.tgz#db7e57c17078f71726e90347e80ca6c576bd9356"
-
 run-async@^2.2.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/run-async/-/run-async-2.3.0.tgz#0371ab4ae0bdd720d4166d7dfda64ff7a445a6c0"

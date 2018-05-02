@@ -40,7 +40,6 @@
     "react-three-renderer": "^3.2.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
-    "round-to-precision": "^1.0.5",
     "sanitize.css": "^5.0.0",
     "three": "^0.87.1",
     "three-orbit-controls": "^82.1.0"

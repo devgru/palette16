@@ -1,12 +1,9 @@
 import React from 'react';
 import objectMap from 'object-map';
 import { rgb, hcl } from 'd3-color';
-import round from 'round-to-precision';
 import closestColorName from '../../utils/closestColorName';
 
 import './index.css';
-
-const cents = round(0.01);
 
 const RED_HUE = 20;
 const BLUE_HUE = 306.28;
@@ -45,17 +42,19 @@ const properties = [lightness, chromatic, temperature];
 const Swatch = ({ background, color }) => {
   const name = closestColorName(background);
 
-  const hclC = hcl(background);
-  const rgbC = rgb(background);
+  const hclColor = hcl(background);
+  const rgbColor = rgb(background);
 
-  const prettyHcl = objectMap(hclC, cents);
-  const prettyRgb = objectMap(rgbC, cents);
+  const prettyHcl = objectMap(hclColor, Math.round);
   if (prettyHcl.c === 0) prettyHcl.h = 'any';
 
   const description = properties
     .map(propertyOf(prettyHcl))
     .filter(Boolean)
     .join(', ');
+
+  const { r, g, b } = rgbColor;
+  const { h, c, l } = prettyHcl;
 
   return (
     <div
@@ -69,10 +68,10 @@ const Swatch = ({ background, color }) => {
       <div className="SwatchProperties">{description}</div>
       <div className="SwatchProperties">{background.toUpperCase()}</div>
       <div className="SwatchProperties">
-        R: {prettyRgb.r}, G: {prettyRgb.g}, B: {prettyRgb.b}
+        R: {r}, G: {g}, B: {b}
       </div>
       <div className="SwatchProperties">
-        H: {prettyHcl.h}, C: {prettyHcl.c}, L: {prettyHcl.l}
+        H: {h}, C: {c}, L: {l}
       </div>
     </div>
   );
