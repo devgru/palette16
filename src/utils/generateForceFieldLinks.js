@@ -1,21 +1,21 @@
 import { range } from 'd3-array';
 
 export default function generateForceFieldLinks(
-  baseColorsCount,
+  bgColorsCount,
+  fgColorsCount,
   accentColorsCount
 ) {
   const links = [];
 
-  //monotoneLinks
-  range(0, baseColorsCount - 1).forEach(source =>
-    links.push({ source, target: source + 1 })
-  );
+  const baseColorsCount = bgColorsCount + fgColorsCount;
+  const allColorsCount = baseColorsCount + accentColorsCount;
 
-  //accentLinks
-  range(0, baseColorsCount).forEach(monotone =>
-    range(baseColorsCount, baseColorsCount + accentColorsCount).forEach(
-      accent => links.push({ source: monotone, target: accent })
-    )
-  );
+  // We link background colors to foreground and accent colors
+  range(0, bgColorsCount - 1).forEach(source => {
+    range(bgColorsCount, allColorsCount).forEach(target => {
+      links.push({ source, target });
+    });
+  });
+
   return links;
 }

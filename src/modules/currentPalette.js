@@ -21,7 +21,7 @@ function componentToHex(c) {
   return hex.length === 1 ? '0' + hex : hex;
 }
 
-function rgbToHex({r, g, b}) {
+function rgbToHex({ r, g, b }) {
   return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
@@ -131,30 +131,28 @@ export const addSlot = color => dispatch => {
     color,
   });
 };
-const BASE_COLORS_COUNT = 8;
+
+const BACKGROUND_COLORS_COUNT = 4;
+const FOREGROUND_COLORS_COUNT = 4;
+const BASE_COLORS_COUNT = BACKGROUND_COLORS_COUNT + FOREGROUND_COLORS_COUNT;
 const ACCENT_COLORS_COUNT = 8;
+const ALL_COLORS_COUNT = BASE_COLORS_COUNT + ACCENT_COLORS_COUNT;
 
-export const buildSlotsFromPalette = function(palette) {
-  const all = range(0, 16).map(
-    n => '#' + palette['base0' + n.toString(16).toUpperCase()]
-  );
-
-  const base = all.slice(0, BASE_COLORS_COUNT);
-  const accents = all.slice(
-    BASE_COLORS_COUNT,
-    BASE_COLORS_COUNT + ACCENT_COLORS_COUNT
-  );
+export const group16ColorsToSlots = all => {
+  const bg = all.slice(0, BACKGROUND_COLORS_COUNT);
+  const fg = all.slice(BACKGROUND_COLORS_COUNT, BASE_COLORS_COUNT);
+  const accents = all.slice(BASE_COLORS_COUNT, ALL_COLORS_COUNT);
 
   const slots = [];
 
   slots.push({
     role: 'background',
-    colors: base.slice(0, 4),
+    colors: bg,
   });
 
   slots.push({
     role: 'foreground',
-    colors: base.slice(4, 8),
+    colors: fg,
   });
 
   accents.forEach(a =>
@@ -163,8 +161,15 @@ export const buildSlotsFromPalette = function(palette) {
       colors: [a],
     })
   );
-  return { all, slots };
+
+  return slots;
 };
+
+export const extractColorsFromPalette = palette =>
+  range(0, ALL_COLORS_COUNT).map(
+    n => '#' + palette['base0' + n.toString(16).toUpperCase()]
+  );
+
 export const loadBase16Palette = paletteKey => async (dispatch, getState) => {
   dispatch({
     type: PALETTE_LOADING_STARTED,
@@ -174,15 +179,14 @@ export const loadBase16Palette = paletteKey => async (dispatch, getState) => {
   const palette = getState().paletteList.palettes[paletteKey];
   if (!palette) return;
 
-  const { all, slots } = buildSlotsFromPalette(palette);
+  const all = extractColorsFromPalette(palette);
+  const slots = group16ColorsToSlots(all);
 
   dispatch({
     type: PALETTE_LOADED,
     name,
     slots,
   });
-
-  return;
 
   // TODO separate force field simulation
 
@@ -193,7 +197,11 @@ export const loadBase16Palette = paletteKey => async (dispatch, getState) => {
     return { color, id, r, g, b, x, y };
   });
 
-  const links = generateForceFieldLinks(BASE_COLORS_COUNT, ACCENT_COLORS_COUNT);
+  const links = generateForceFieldLinks(
+    BACKGROUND_COLORS_COUNT,
+    FOREGROUND_COLORS_COUNT,
+    ACCENT_COLORS_COUNT
+  );
 
   links.forEach(link => {
     const sourceColor = all[link.source];
@@ -215,18 +223,21 @@ export const loadBase16Palette = paletteKey => async (dispatch, getState) => {
     });
   }
 };
+
 export const loadCustomPalette = palette => dispatch => {
   dispatch({
     type: PALETTE_LOADED,
     ...palette,
   });
 };
+
 export const selectColor = selectedColor => dispatch => {
   dispatch({
     type: SELECT_COLOR,
     selectedColor,
   });
 };
+
 export const modifyCurrentColor = (component, change) => dispatch => {
   dispatch({
     type: MODIFY_CURRENT_COLOR,
