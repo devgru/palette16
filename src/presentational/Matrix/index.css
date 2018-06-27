@@ -1,0 +1,13 @@
+.MatrixRow {
+  margin: 0;
+  padding: 0;
+}
+
+.MatrixCell {
+  width: 1.5em;
+  height: 1.5em;
+  margin: 0;
+  padding: 0;
+  display: inline-block;
+  text-align: center;
+}

@@ -19,6 +19,7 @@ import ColorSpace from '../../presentational/ColorSpace';
 import ForceField from '../../presentational/ForceField';
 import CodeExample from '../../presentational/CodeExample';
 import Slots from '../../presentational/Slots';
+import Matrix from '../../presentational/Matrix';
 
 import fitPlane from '../../utils/fitPlane';
 
@@ -141,6 +142,7 @@ class Home extends Component {
         />
         {forceField && <ForceField forceField={forceField} />}
         <ColorSpace colors={all} accents={accents} plane={plane} />
+        <Matrix colors={all} />
         <CodeExample colors={all} />
       </Dropzone>
     );
