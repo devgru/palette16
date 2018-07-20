@@ -1,0 +1,61 @@
+.Tutorial {
+  display: flex;
+  width: 100%;
+}
+
+.Tutorial-page {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 3em 0 5em;
+}
+
+.Tutorial-page_narrow {
+  height: 10vh;
+}
+
+.Tutorial-page_inverse {
+  background: var(--color7);
+  color: var(--color0);
+}
+
+.Tutorial-page_border_inverse {
+  width: 100vw;
+  height: 10vh;
+  padding: 0;
+  border-style: solid;
+  border-width: 5vh 50vw;
+  border-color: var(--color0) var(--color7) var(--color7) var(--color0);
+}
+
+.Tutorial-page_border {
+  width: 100vw;
+  height: 10vh;
+  padding: 0;
+  border-style: solid;
+  border-width: 5vh 50vw;
+  border-color: var(--color7) var(--color7) var(--color0) var(--color0);
+}
+
+.Tutorial-text {
+  display: block;
+  clear: both;
+  flex-grow: 1;
+  margin: 0 auto;
+  max-width: 500px;
+  text-align: left;
+}
+
+.Tutorial-wide {
+  display: block;
+  clear: both;
+  flex-grow: 1;
+  text-align: left;
+}
+
+.Tutorial-swatch {
+  display: inline-block;
+  width: 6.25vw;
+  height: 6.25vw;
+}

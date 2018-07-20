@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import Home from '../home';
+import Tutorial from '../tutorial';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loadPaletteUrls } from '../../modules/paletteList';
@@ -9,12 +10,12 @@ import { modifyCurrentColor } from '../../modules/currentPalette';
 import './index.css';
 
 const codes = {
-  'KeyY': ['r', 1],
-  'KeyH': ['r', -1],
-  'KeyU': ['g', 1],
-  'KeyJ': ['g', -1],
-  'KeyI': ['b', 1],
-  'KeyK': ['b', -1],
+  KeyY: ['r', 1],
+  KeyH: ['r', -1],
+  KeyU: ['g', 1],
+  KeyJ: ['g', -1],
+  KeyI: ['b', 1],
+  KeyK: ['b', -1],
 };
 
 class App extends Component {
@@ -33,7 +34,9 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Route path="/" component={Home} />
+        <Route exact={true} path="/" component={Home} />
+        <Route path="/palette" component={Home} />
+        <Route exact={true} path="/tutorial" component={Tutorial} />
       </div>
     );
   }
