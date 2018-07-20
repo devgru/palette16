@@ -7,9 +7,7 @@ import { alea } from 'seedrandom';
 import { ParallaxProvider, Parallax } from 'react-scroll-parallax';
 
 import './index.css';
-import Swatch from '../../presentational/Swatch';
 import { loadBase16Palette } from '../../modules/currentPalette';
-import farthestOf from '../../utils/farthestOf';
 
 class Tutorial extends Component {
   constructor(props) {
