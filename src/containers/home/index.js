@@ -141,7 +141,13 @@ class Home extends Component {
           addSlot={addSlot}
         />
         {forceField && <ForceField forceField={forceField} />}
-        <ColorSpace colors={all} accents={accents} plane={plane} />
+        <ColorSpace
+          width={600}
+          height={600}
+          colors={all}
+          accents={accents}
+          plane={plane}
+        />
         <Matrix colors={all} />
         <CodeExample colors={all} />
       </Dropzone>

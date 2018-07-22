@@ -10,8 +10,6 @@ import generatePoints from '../../utils/generatePoints';
 import createPlaneMesh from '../../utils/createPlaneMesh';
 import createPoint from '../../utils/createPointMesh';
 
-import './index.css';
-
 class ColorSpace extends Component {
   constructor(props, context) {
     super(props, context);
@@ -27,6 +25,10 @@ class ColorSpace extends Component {
   componentDidMount() {
     const Controls = OrbitControls(THREE);
     this.controls = new Controls(this.refs.camera, this.ref);
+    const { controlsOptions } = this.props;
+    Object.keys(controlsOptions).forEach(key => {
+      this.controls[key] = controlsOptions[key];
+    });
 
     const renderScene = () => {
       this.state.renderScene();
@@ -51,10 +53,8 @@ class ColorSpace extends Component {
   }
 
   render() {
-    const width = 600;
-    const height = 600;
     const { backgroundPoints } = this.state;
-    const { colors, plane, accents } = this.props;
+    const { colors, plane, accents = [], width, height } = this.props;
 
     const palettePoints = colors.map(color => createPoint(rgb(color), 1));
     const projectedPoints = accents.map(color =>
