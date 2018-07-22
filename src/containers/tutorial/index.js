@@ -3,11 +3,20 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { alea } from 'seedrandom';
+import seedrandom from 'seedrandom';
 import { ParallaxProvider, Parallax } from 'react-scroll-parallax';
 
-import './index.css';
 import { loadBase16Palette } from '../../modules/currentPalette';
+import InlineSwatch from '../../presentational/InlineSwatch';
+import GithubCorner from '../../presentational/GithubCorner';
+import Matrix from '../../presentational/Matrix';
+import ColorSpace from '../../presentational/ColorSpace';
+import Page1 from '../../presentational/TutorialPages/01-Title';
+import Page2 from '../../presentational/TutorialPages/02-Intro';
+
+import './index.css';
+
+const Alea = seedrandom.alea;
 
 class Tutorial extends Component {
   constructor(props) {
@@ -36,12 +45,14 @@ class Tutorial extends Component {
   }
 
   render() {
-    const { all } = this.props;
+    const { all, base } = this.props;
     if (!all) {
       return null;
     }
 
-    const arng = new alea('hello there');
+    const baseReversed = [...base].reverse();
+
+    const arng = new Alea('hello there');
 
     const background = all[0];
     const foreground = all[7];
@@ -65,84 +76,51 @@ class Tutorial extends Component {
       foreground,
     ];
 
-    const GAP = 100;
+    const GAP = 40;
     return (
-      <ParallaxProvider className="Tutorial">
-        <div>
-          <div className="Tutorial-page">
-            <div className="Tutorial-text">
-              <h1>Программисты и цвета</h1>
-              <p>
-                Меня зовут Дима и я программист. Я учился программировать с
-                младшей школы, все пять лет ВУЗа смотрел в экран по 12 часов в
-                день, практически каждый день. Уже десять лет я работаю
-                программистом.
-              </p>
-              <p>
-                Я радуюсь тому, что у меня всё ещё хорошее зрение и стараюсь о
-                нём заботиться.
-              </p>
-              <p>
-                Если и вы хотите тоже — устраивайтесь поудобнее, я расскажу вам
-                о цветовых схемах.
-              </p>
-            </div>
-          </div>
-          <div className="Tutorial-page Tutorial-page_border_inverse" />
-
-          <div className="Tutorial-page Tutorial-page_inverse">
-            <div className="Tutorial-text">
-              <h1>Что мы видим?</h1>
-              <p>
-                Перед глазами программиста часто находится среда разработки или
-                терминал.
-              </p>
-              <p>
-                В таких программах обычно можно настроить визуальную «тему»:
-                цвета, шрифты, высоту строк и т.п.
-              </p>
-              <p>
-                Я не буду рассказывать о выборе шрифта и других настройках,
-                ограничусь только цветами.
-              </p>
-              <p>
-                Если вы нашли для себя идеальную тему, но вас не устраивают
-                цвета — всегда можно заменить их на другие. Если вы сделаете это
-                и напишите мне — я буду знать, что не зря создал этот документ.
-              </p>
-            </div>
-          </div>
-          <div className="Tutorial-page Tutorial-page_border" />
+      <ParallaxProvider>
+        <div className="Tutorial">
+          <GithubCorner />
+          <Page1 />
+          <div className="Tutorial-page Tutorial-page_inverse_open" />
+          <Page2 />
+          <div className="Tutorial-page Tutorial-page_inverse_close" />
           <div className="Tutorial-page">
             <div className="Tutorial-text">
               <h1>Цветовая схема</h1>
               <p>
                 При настройке темы можно использовать любое количество цветов.
-              </p>
-              <p>Набор цветов называют цветовой схемой.</p>
-              <p>
-                Я буду рассказывать о цветовых схемах, попадающих под стандарт{' '}
-                <a href="http://chriskempson.com/projects/base16/">base16</a>.
-              </p>
-              <p>Такие цветовые схемы состоят из 16 цветов.</p>
-              <p>
-                8 цветов основной последовательности, первый из которых является
-                основным цветом фона а последний — основным цветом текста.
+                Набор цветов называют цветовой схемой.
               </p>
               <p>
-                8 акцентных цветов, использующихся для выделения текста по
-                смыслу.
+                По моему наблюдению, в 2007-2012 окружающие меня программисты
+                работали в стандартных темах IDE или меняли цветовую схему на
+                «тёмную», не особо заморачиваясь выбором конкретных цветов.
+              </p>
+              <p>
+                Со временем ситуация улучшилась — коллеги стали активнее
+                экспериментировать с настройками IDE, некоторые цветовые схемы
+                стали популярными. Теперь я редко вижу стандартные цвета на
+                чужих мониторах.
               </p>
             </div>
           </div>
-          <div className="Tutorial-page">
+          <div className="Tutorial-page Tutorial-page_inverse_open" />
+          <div className="Tutorial-page Tutorial-page_inverse">
             <div className="Tutorial-text">
               <h1>Современные схемы</h1>
+              <p>
+                В этом документе я ссылаюсь на современные цветовые схемы и
+                стандарт их разработки —{' '}
+                <a href="http://chriskempson.com/projects/base16/">base16</a>.
+              </p>
               <p>
                 В 2011{' '}
                 <a href="https://twitter.com/ethanschoonover">Этан Шуновер</a>{' '}
                 представил цветовую схему{' '}
-                <a href="http://ethanschoonover.com/solarized">Solarized</a>.
+                <a href="http://ethanschoonover.com/solarized">Solarized</a>. Я
+                использую эту схему в своих IDE и терминалах. И в этом документе
+                по умолчанию используется именно она.
               </p>
               <p>
                 В 2013{' '}
@@ -152,23 +130,121 @@ class Tutorial extends Component {
                   Atelier
                 </a>.
               </p>
+              <p>
+                В 2016{' '}
+                <a href="https://twitter.com/trevordmiller">Тревор Миллер</a>{' '}
+                представил схему{' '}
+                <a href="https://trevordmiller.com/projects/nova">Nova</a>.
+              </p>
+              <p>
+                В 2018 <a href="https://twitter.com/sarah_edo">Сара Драснер</a>{' '}
+                создала тему{' '}
+                <a href="https://github.com/sdras/night-owl-vscode-theme">
+                  Night Owl
+                </a>, использующую одноименную цветовую схему.
+              </p>
             </div>
           </div>
-          <div className="Tutorial-page Tutorial-page_narrow Tutorial-page_inverse">
+          <div className="Tutorial-page Tutorial-page_inverse_close" />
+          <div className="Tutorial-page Tutorial-page">
             <div className="Tutorial-wide">
-              {border1.map((color, i) => (
-                <Parallax
-                  className="Tutorial-swatch"
-                  key={i}
-                  offsetYMin={-(arng() * GAP * 3)}
-                  offsetYMax={arng() * GAP}
-                >
-                  <div
+              {/*
+              {border1.map((color, i) => {
+                const offset = `${arng() * GAP}px`;
+                return (
+                  <Parallax
+                    slowerScrollRate
                     className="Tutorial-swatch"
-                    style={{ background: color }}
-                  />
-                </Parallax>
-              ))}
+                    key={i}
+                    offsetYMin={`-${offset}`}
+                    offsetYMax={offset}
+                  >
+                    <div
+                      className="Tutorial-swatch"
+                      style={{ background: color }}
+                    />
+                  </Parallax>
+                );
+              })}
+*/}
+              <div className="Tutorial-text">
+                <h1>Состав схемы</h1>
+                <p>Стандарт base16 предлагает собирать схему из 16 цветов:</p>
+                <ul>
+                  <li>
+                    8 в основной последовательности,{' '}
+                    <InlineSwatch color={background} />
+                    первый из которых является основным цветом фона а{' '}
+                    <InlineSwatch color={foreground} />
+                    последний — основным цветом текста.
+                  </li>
+                  <li>
+                    8 акцентных, использующихся для выделения текста или фона по
+                    смыслу.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="Tutorial-text">
+              <h1>Восемь основных оттенков</h1>
+              <p>
+                Основная последовательность{' '}
+                {base.map(color => <InlineSwatch color={color} />)} состоит из
+                трёх групп.
+              </p>
+              <p>
+                <InlineSwatch color={all[0]} /> и{' '}
+                <InlineSwatch color={all[1]} /> — фоны, основной и
+                альтернативный (например, для выделения текущей строки в
+                редакторе).
+              </p>
+              <p>
+                <InlineSwatch color={all[2]} />
+                <InlineSwatch color={all[3]} />
+                <InlineSwatch color={all[4]} />
+                <InlineSwatch color={all[5]} /> — промежуточные цвета. Ими
+                рисуют «приглушённый» текст (номера строк, ключевые слова языка
+                программирования), линейки и границы.
+              </p>
+              <p>
+                <InlineSwatch color={all[6]} /> и{' '}
+                <InlineSwatch color={all[7]} /> — цвета текста.
+              </p>
+              <p>
+                В большинстве base16-совместимых схем основную
+                последовательность можно развернуть, поменяв порядок цветов. При
+                переносе цветов в файлы, импортируемые в настройки программы,
+                такие схемы публикуют в двух версиях, светлой и тёмной. В этом
+                документе я иногда «разворачиваю» схему, чтобы вы увидели как
+                она работает в инверсии.
+              </p>
+              <p>
+                В таблице показано, как будет выглядеть сочетание текста и фона.
+                Если цветовая схема спроектирована правильно, цвета каждой из
+                групп будут контрастны с остальными группами.
+              </p>
+              <p>
+                Обратите внимание, как группы цветов расположены в
+                LAB-пространстве:
+              </p>
+            </div>
+            <Matrix colors={base} />
+            <div className="Tutorial-text">
+              <ColorSpace
+                width={600}
+                height={600}
+                colors={baseReversed}
+                controlsOptions={{
+                  enableKeys: false,
+                  enableZoom: false,
+                }}
+              />
+            </div>
+            <div className="Tutorial-wide">
+              <div className="Tutorial-text">
+                <h1>LAB-пространство?</h1>
+                <p />
+              </div>
             </div>
           </div>
         </div>
