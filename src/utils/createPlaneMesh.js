@@ -15,6 +15,9 @@ const getQuaternion = normal => {
 };
 
 export default function createPlaneMesh(plane) {
+  if (!plane) {
+    return null;
+  }
   const { centroid, normal, color } = plane;
   return (
     <line key="plane" position={centroid} quaternion={getQuaternion(normal)}>
