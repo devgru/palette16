@@ -1,0 +1,8 @@
+.InlineSwatch {
+  display: inline-block;
+  width: 0.75em;
+  height: 0.75em;
+  border: 1px solid;
+  border-radius: 0.25em;
+  margin: 0 1px -0.05em 0;
+}
