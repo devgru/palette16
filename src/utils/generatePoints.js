@@ -1,4 +1,4 @@
-import createPoint from './createPointMesh';
+import createPointMesh from './createPointMesh';
 import { rgb } from 'd3-color';
 
 const cubeItems = 5;
@@ -9,7 +9,7 @@ export default function generatePoints() {
   for (let r = 0; r <= 255; r += colorStep) {
     for (let g = 0; g <= 255; g += colorStep) {
       for (let b = 0; b <= 255; b += colorStep) {
-        result.push(createPoint(rgb(r, g, b), 0.1));
+        result.push(createPointMesh(rgb(r, g, b), 0.1));
       }
     }
   }

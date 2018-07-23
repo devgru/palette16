@@ -8,7 +8,7 @@ import uniqBy from 'lodash.uniqby';
 
 import generatePoints from '../../utils/generatePoints';
 import createPlaneMesh from '../../utils/createPlaneMesh';
-import createPoint from '../../utils/createPointMesh';
+import createPointMesh from '../../utils/createPointMesh';
 
 class ColorSpace extends Component {
   constructor(props, context) {
@@ -56,9 +56,9 @@ class ColorSpace extends Component {
     const { backgroundPoints } = this.state;
     const { colors, plane, accents = [], width, height } = this.props;
 
-    const palettePoints = colors.map(color => createPoint(rgb(color), 1));
+    const palettePoints = colors.map(color => createPointMesh(rgb(color), 1));
     const projectedPoints = accents.map(color =>
-      createPoint(rgb(color), 0.7, plane)
+      createPointMesh(rgb(color), 0.7, plane)
     );
     const uniqPoints = uniqBy(palettePoints, a => a.key);
     const uniqProjectedPoints = uniqBy(projectedPoints, a => a.key);

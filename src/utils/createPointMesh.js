@@ -1,6 +1,6 @@
 import React from 'react';
 
-import colorToVector3 from './colorToVector3';
+import colorToLabPoint from './colorToLabPoint';
 import toHex from './toHex';
 
 const cubeSpace = 4;
@@ -16,15 +16,15 @@ const projectToPlane = (point, plane) => {
 
 export default function createPointMesh(color, a = 1, plane = null) {
   const colorHex = toHex(color);
-  const point = colorToVector3(color);
+  const point = colorToLabPoint(color);
   if (plane) {
     projectToPlane(point, plane);
   }
 
   return (
     <mesh key={`${colorHex}-${a}`} position={point}>
-      <sphereGeometry radius={pointSize} />
       <meshBasicMaterial transparent opacity={a} color={colorHex} />
+      <sphereGeometry radius={pointSize} />
     </mesh>
   );
 }
