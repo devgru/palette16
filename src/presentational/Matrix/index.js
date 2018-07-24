@@ -3,7 +3,7 @@ import React from 'react';
 import './index.css';
 
 export default ({ colors }) => (
-  <div>
+  <div className="Matrix">
     {colors.map((bg, i) => (
       <div key={i} className="MatrixRow">
         {colors.map((fg, j) => (

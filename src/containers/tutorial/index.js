@@ -6,6 +6,9 @@ import { withRouter } from 'react-router';
 import seedrandom from 'seedrandom';
 import { ParallaxProvider, Parallax } from 'react-scroll-parallax';
 
+import colorToRgbPoint from '../../utils/colorToRgbPoint';
+import colorToHsvPoint from '../../utils/colorToHsvPoint';
+import colorToHslPoint from '../../utils/colorToHslPoint';
 import { loadBase16Palette } from '../../modules/currentPalette';
 import InlineSwatch from '../../presentational/InlineSwatch';
 import GithubCorner from '../../presentational/GithubCorner';
@@ -147,43 +150,22 @@ class Tutorial extends Component {
           </div>
           <div className="Tutorial-page Tutorial-page_inverse_close" />
           <div className="Tutorial-page Tutorial-page">
-            <div className="Tutorial-wide">
-              {/*
-              {border1.map((color, i) => {
-                const offset = `${arng() * GAP}px`;
-                return (
-                  <Parallax
-                    slowerScrollRate
-                    className="Tutorial-swatch"
-                    key={i}
-                    offsetYMin={`-${offset}`}
-                    offsetYMax={offset}
-                  >
-                    <div
-                      className="Tutorial-swatch"
-                      style={{ background: color }}
-                    />
-                  </Parallax>
-                );
-              })}
-*/}
-              <div className="Tutorial-text">
-                <h1>Состав схемы</h1>
-                <p>Стандарт base16 предлагает собирать схему из 16 цветов:</p>
-                <ul>
-                  <li>
-                    8 в основной последовательности,{' '}
-                    <InlineSwatch color={background} />
-                    первый из которых является основным цветом фона а{' '}
-                    <InlineSwatch color={foreground} />
-                    последний — основным цветом текста.
-                  </li>
-                  <li>
-                    8 акцентных, использующихся для выделения текста или фона по
-                    смыслу.
-                  </li>
-                </ul>
-              </div>
+            <div className="Tutorial-text">
+              <h1>Состав схемы</h1>
+              <p>Стандарт base16 предлагает собирать схему из 16 цветов:</p>
+              <ul>
+                <li>
+                  8 в основной последовательности,{' '}
+                  <InlineSwatch color={background} />
+                  первый из которых является основным цветом фона а{' '}
+                  <InlineSwatch color={foreground} />
+                  последний — основным цветом текста.
+                </li>
+                <li>
+                  8 акцентных, использующихся для выделения текста или фона по
+                  смыслу.
+                </li>
+              </ul>
             </div>
             <div className="Tutorial-text">
               <h1>Восемь основных оттенков</h1>
@@ -218,6 +200,11 @@ class Tutorial extends Component {
                 документе я иногда «разворачиваю» схему, чтобы вы увидели как
                 она работает в инверсии.
               </p>
+            </div>
+            <div className="Tutorial-text">
+              <Matrix colors={base} />
+            </div>
+            <div className="Tutorial-text">
               <p>
                 В таблице показано, как будет выглядеть сочетание текста и фона.
                 Если цветовая схема спроектирована правильно, цвета каждой из
@@ -228,24 +215,87 @@ class Tutorial extends Component {
                 LAB-пространстве:
               </p>
             </div>
-            <Matrix colors={base} />
-            <div className="Tutorial-text">
+            <div className="Tutorial-wide">
               <ColorSpace
                 width={600}
                 height={600}
-                colors={baseReversed}
+                colors={base}
                 controlsOptions={{
                   enableKeys: false,
                   enableZoom: false,
                 }}
               />
             </div>
-            <div className="Tutorial-wide">
-              <div className="Tutorial-text">
-                <h1>LAB-пространство?</h1>
-                <p />
-              </div>
+            <div className="Tutorial-text">
+              <h1>LAB-пространство?</h1>
+              <p>
+                Цвета обычно хранятся и передаются в формате RGB — по байту на
+                каждую из цветовых компонент: красный, зелёный и синий цвета.
+              </p>
+              <p>
+                RGB идеально подходит чтобы сообщить монитору насколько ярко
+                нужно включить каждый из суб-пикселей, но для человека это не
+                лучший формат описания цвета. В RGB трудно оценивать
+                характеристики цвета — яркость, насыщенность, тон. Например,{' '}
+                <InlineSwatch color="#080" /> #080 будет куда ярче чем #008{' '}
+                <InlineSwatch color="#008" />, хотя цифры использованы
+                идентичные.
+              </p>
+              <p>
+                Производные от RGB модели HSL и HSV используют другие
+                характеристики для описания цвета: тон (Hue), насыщенность
+                (Saturation) и яркость или значение (Lightness, Value).
+                Отличаются эти две модели только в последней характеристике: в
+                HSL максимальной яркостью обладает только белый цвет, в HSV
+                максимальное значение будет у всех цвета, в которых хотя бы один
+                из компонентов RGB имеет максимальное значение.
+              </p>
+              <p>
+                Вот так модели RGB, HSL и HSV можно представить в пространстве:
+              </p>
             </div>
+            {[colorToRgbPoint, colorToHslPoint, colorToHsvPoint].map(
+              (fn, i) => (
+                <ColorSpace
+                  key={i}
+                  width={300}
+                  height={300}
+                  colors={[background]}
+                  controlsOptions={{
+                    enableKeys: false,
+                    enableZoom: false,
+                  }}
+                  colorToPoint={fn}
+                  gridOpacity={1}
+                />
+              )
+            )}
+            <div className="Tutorial-text">
+              <p>
+                CIE LAB или просто LAB — другая модель, она так же содержит
+                яркость (Lightness), но здесь яркость определена с учётом того,
+                как наши глаза воспринимают свет. Подробнее об можно прочитать{' '}
+                <a href="https://habr.com/post/209738/">на Хабре</a>. Координаты
+                A и B не имеют отдельных названий, это просто расстояние от
+                центральной оси L, на которой лежат цвета от чёрного до белого.
+              </p>
+              <p>
+                Чтобы проще ориентироваться в цветовом пространстве можно также
+                использовать систему координат HCL (она же CIE LCH). В ней
+                декартовы координаты A и B заменяются полярными — углом H (Hue),
+                обозначающим тон и радиусом C (Chroma).
+              </p>
+            </div>
+            <ColorSpace
+              width={300}
+              height={300}
+              colors={[background]}
+              controlsOptions={{
+                enableKeys: false,
+                enableZoom: false,
+              }}
+              gridOpacity={1}
+            />
           </div>
         </div>
       </ParallaxProvider>

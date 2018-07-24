@@ -1,6 +1,5 @@
 import React from 'react';
 
-import colorToLabPoint from './colorToLabPoint';
 import toHex from './toHex';
 
 const cubeSpace = 4;
@@ -14,9 +13,14 @@ const projectToPlane = (point, plane) => {
   );
 };
 
-export default function createPointMesh(color, a = 1, plane = null) {
+export default function createPointMesh(
+  colorToPoint,
+  color,
+  a = 1,
+  plane = null
+) {
   const colorHex = toHex(color);
-  const point = colorToLabPoint(color);
+  const point = colorToPoint(color);
   if (plane) {
     projectToPlane(point, plane);
   }

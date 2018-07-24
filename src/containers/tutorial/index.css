@@ -9,10 +9,6 @@
 }
 
 .Tutorial-page {
-  display: flex;
-  flex-flow: row wrap;
-  align-items: center;
-  justify-content: center;
   padding: 3em 0;
 }
 
@@ -53,19 +49,19 @@
 }
 
 .Tutorial-text {
-  display: block;
   clear: left;
-  flex-grow: 1;
-  margin: 0 auto 0 10em;
+  margin: 0 0 0 10em;
   padding-right: 2em;
   max-width: 36em;
-  text-align: left;
 }
 
 .Tutorial-wide {
-  display: block;
-  text-align: left;
+  clear: left;
+  padding-left: 10em;
+  padding-right: 2em;
   width: 100%;
+
+  overflow: hidden;
 }
 
 .Tutorial-swatch {
@@ -80,4 +76,8 @@
 
 .Tutorial-page p {
   margin: 0.5em 0 0.75em;
+}
+
+.Tutorial-page .ColorSpace {
+  float: left;
 }

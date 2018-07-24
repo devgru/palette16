@@ -9,6 +9,7 @@ import uniqBy from 'lodash.uniqby';
 import generatePoints from '../../utils/generatePoints';
 import createPlaneMesh from '../../utils/createPlaneMesh';
 import createPointMesh from '../../utils/createPointMesh';
+import colorToLabPoint from '../../utils/colorToLabPoint';
 
 class ColorSpace extends Component {
   constructor(props, context) {
@@ -16,8 +17,13 @@ class ColorSpace extends Component {
 
     this.cameraPosition = new THREE.Vector3(0, 0, 500);
 
+    const colorToPoint = props.colorToPoint || colorToLabPoint;
+    const gridOpacity = props.gridOpacity || 0.1;
+    const gridSteps = props.gridSteps || 5;
+    const gridPoints = generatePoints(colorToPoint, gridSteps, gridOpacity);
     this.state = {
-      backgroundPoints: generatePoints(),
+      colorToPoint,
+      gridPoints,
       renderScene: () => {},
     };
   }
@@ -25,7 +31,7 @@ class ColorSpace extends Component {
   componentDidMount() {
     const Controls = OrbitControls(THREE);
     this.controls = new Controls(this.refs.camera, this.ref);
-    const { controlsOptions } = this.props;
+    const { controlsOptions = {} } = this.props;
     Object.keys(controlsOptions).forEach(key => {
       this.controls[key] = controlsOptions[key];
     });
@@ -53,12 +59,14 @@ class ColorSpace extends Component {
   }
 
   render() {
-    const { backgroundPoints } = this.state;
+    const { gridPoints } = this.state;
     const { colors, plane, accents = [], width, height } = this.props;
 
-    const palettePoints = colors.map(color => createPointMesh(rgb(color), 1));
+    const palettePoints = colors.map(color =>
+      createPointMesh(this.state.colorToPoint, rgb(color), 1)
+    );
     const projectedPoints = accents.map(color =>
-      createPointMesh(rgb(color), 0.7, plane)
+      createPointMesh(this.state.colorToPoint, rgb(color), 0.7, plane)
     );
     const uniqPoints = uniqBy(palettePoints, a => a.key);
     const uniqProjectedPoints = uniqBy(projectedPoints, a => a.key);
@@ -84,7 +92,7 @@ class ColorSpace extends Component {
               position={this.cameraPosition}
             />
             {createPlaneMesh(plane, 'red')}
-            {backgroundPoints}
+            {gridPoints}
             {uniqPoints}
             {uniqProjectedPoints}
           </scene>

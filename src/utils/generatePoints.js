@@ -1,15 +1,13 @@
 import createPointMesh from './createPointMesh';
 import { rgb } from 'd3-color';
 
-const cubeItems = 5;
-const colorStep = 255 / cubeItems;
-
-export default function generatePoints() {
+export default function generatePoints(colorToPoint, steps, opacity) {
   const result = [];
-  for (let r = 0; r <= 255; r += colorStep) {
-    for (let g = 0; g <= 255; g += colorStep) {
-      for (let b = 0; b <= 255; b += colorStep) {
-        result.push(createPointMesh(rgb(r, g, b), 0.1));
+  const gridStep = 255 / steps;
+  for (let r = 0; r <= 255; r += gridStep) {
+    for (let g = 0; g <= 255; g += gridStep) {
+      for (let b = 0; b <= 255; b += gridStep) {
+        result.push(createPointMesh(colorToPoint, rgb(r, g, b), opacity));
       }
     }
   }
