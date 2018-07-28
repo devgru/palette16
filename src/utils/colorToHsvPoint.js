@@ -5,7 +5,7 @@ import objectToArray from './objectToArray';
 
 const axisY = new Vector3(0, 1, 0);
 
-export default function colorToHsvPoint(color, cone = false) {
+export default function colorToHsvPoint(color, cone = true) {
   let { h } = hsl(color);
   if (isNaN(h)) h = 0;
 

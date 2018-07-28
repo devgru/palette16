@@ -3,7 +3,7 @@ import { hsl } from 'd3-color';
 
 const axisY = new Vector3(0, 1, 0);
 
-export default function calcHslTarget(color, biCone = false) {
+export default function calcHslTarget(color, biCone = true) {
   let { h, s, l } = hsl(color);
   if (isNaN(s)) s = 0;
   if (isNaN(h)) h = 0;
