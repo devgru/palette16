@@ -1,8 +1,21 @@
 .InlineSwatch {
   display: inline-block;
+  position: relative;
   width: 0.75em;
   height: 0.75em;
   border: 1px solid;
   border-radius: 0.25em;
   margin: 0 1px -0.05em 0;
+}
+
+.InlineSwatch-hover {
+  display: none;
+  position: absolute;
+  z-index: 1;
+  left: -6em;
+  top: 1em;
+}
+
+.InlineSwatch:hover .InlineSwatch-hover {
+  display: block;
 }

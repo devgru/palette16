@@ -11,6 +11,7 @@ import generatePoints from '../../utils/generatePoints';
 import createPlaneMesh from '../../utils/createPlaneMesh';
 import createPointMesh from '../../utils/createPointMesh';
 import colorToLabPoint from '../../utils/colorToLabPoint';
+import Swatch from '../Swatch';
 
 class ColorSpace extends Component {
   constructor(props, context) {
@@ -32,7 +33,7 @@ class ColorSpace extends Component {
   componentDidMount() {
     const Controls = OrbitControls(THREE);
     this.controls = new Controls(this.refs.camera, this.ref);
-    const { controlsOptions = {}, animate } = this.props;
+    const { controlsOptions = {} } = this.props;
     Object.keys(controlsOptions).forEach(key => {
       this.controls[key] = controlsOptions[key];
     });
@@ -71,7 +72,16 @@ class ColorSpace extends Component {
 
   render() {
     const { gridPoints } = this.state;
-    const { colors, plane, accents = [], width, height, animate } = this.props;
+    const {
+      colors,
+      background,
+      plane,
+      accents = [],
+      width,
+      height,
+      animate,
+    } = this.props;
+    const { base } = this.context;
 
     const palettePoints = colors.map(color =>
       createPointMesh(this.state.colorToPoint, rgb(color), 1)
@@ -92,7 +102,7 @@ class ColorSpace extends Component {
         mainCamera="camera"
         width={width}
         height={height}
-        clearColor={colors[0]}
+        clearColor={background || base[0]}
         forceManualRender
         onManualRenderTriggerCreated={this.onManualRenderTriggerCreated}
       >
@@ -136,6 +146,10 @@ class ColorSpace extends Component {
     );
   }
 }
+
+ColorSpace.contextTypes = {
+  base: PropTypes.arrayOf(PropTypes.string),
+};
 
 ColorSpace.propTypes = {
   colors: PropTypes.arrayOf(PropTypes.string).isRequired,

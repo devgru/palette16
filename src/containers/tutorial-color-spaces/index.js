@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
+import TutorialContainer from '../tutorial-container';
 import colorToRgbPoint from '../../utils/colorToRgbPoint';
 import colorToHsvPoint from '../../utils/colorToHsvPoint';
 import colorToHslPoint from '../../utils/colorToHslPoint';
@@ -14,7 +15,7 @@ import ColorSpace from '../../presentational/ColorSpace';
 
 import '../tutorial/index.css';
 
-class Tutorial extends Component {
+class Tutorial extends TutorialContainer {
   constructor(props) {
     super(props);
     props.loadBase16Palette('solarized-light');
@@ -242,6 +243,4 @@ const mapStateToProps = ({ currentPalette }) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ loadBase16Palette }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(
-  withRouter(Tutorial)
-);
+export default connect(mapStateToProps, mapDispatchToProps)(Tutorial);

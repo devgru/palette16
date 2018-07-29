@@ -2,20 +2,20 @@ import React from 'react';
 
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
-export default ({ colors }) => {
+export default ({ colors, children, language }) => {
   const style = {
     hljs: {
       display: 'block',
       overflowX: 'auto',
       padding: '0em',
       background: colors[0],
-      color: colors[4],
+      color: colors[6],
     },
     'hljs-comment': {
-      color: colors[2],
+      color: colors[4],
     },
     'hljs-quote': {
-      color: colors[2],
+      color: colors[4],
     },
     'hljs-keyword': {
       color: colors[11],
@@ -118,50 +118,9 @@ export default ({ colors }) => {
     },
   };
 
-  const codeString = `
-    function createStyleObject(classNames, style) {
-      return classNames.reduce((styleObject, className) => {
-        return {...styleObject, ...style[className]};
-      }, {});
-    }
-    
-    function createClassNameString(classNames) {
-      return classNames.join(' ');
-    }
-    
-    function createChildren(style, useInlineStyles) {
-      let childrenCount = 0;
-      return children => {
-        childrenCount += 1;
-        return children.map((child, i) => createElement({
-          node: child,
-          style,
-          useInlineStyles,
-          key: \`code-segment-\${childrenCount}-\${i}\`
-        }));
-      }
-    }
-    
-    function createElement({ node, style, useInlineStyles, key }) {
-      const { properties, type, tagName, value } = node;
-      if (type === "text") {
-        return value;
-      } else if (tagName) {
-        const TagName = tagName;
-        const childrenCreator = createChildren(style, useInlineStyles);
-        const props = (
-          useInlineStyles
-          ? { style: createStyleObject(properties.className, style) }
-          : { className: createClassNameString(properties.className) }
-        );
-        const children = childrenCreator(node.children);
-        return <TagName key={key} {...props}>{children}</TagName>;
-      }
-    }
-  `;
   return (
     <SyntaxHighlighter
-      language="javascript"
+      language={language}
       style={style}
       showLineNumbers={true}
       lineNumberContainerStyle={{
@@ -177,7 +136,7 @@ export default ({ colors }) => {
         clear: 'both',
       }}
     >
-      {codeString}
+      {children}
     </SyntaxHighlighter>
   );
 };

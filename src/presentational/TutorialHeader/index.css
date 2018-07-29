@@ -1,0 +1,16 @@
+.TutorialHeader {
+  position: relative;
+  margin-left: -2em;
+  padding-left: 2em;
+}
+
+.TutorialHeader:hover .TutorialHeader-hash {
+  display: inline;
+}
+
+.TutorialHeader-hash {
+  position: absolute;
+  text-decoration: none;
+  left: 1em;
+  display: none;
+}
