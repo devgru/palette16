@@ -174,11 +174,10 @@ class Home extends Component {
       >
         <SwatchLine colors={base} />
         <SwatchLine colors={accents} />
-        <HueCircle colors={accents} uiContext={uiContext} />
+        <HueCircle colors={accents} />
         <Slots
           colors={all}
           slots={slots}
-          uiContext={uiContext}
           addColor={addColor}
           addSlot={addSlot}
         />

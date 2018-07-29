@@ -15,12 +15,13 @@ import Page2 from '../../presentational/TutorialPages/02-Intro';
 import Page3 from '../../presentational/TutorialPages/03-ColorScheme';
 import InversePage from '../../presentational/InversePage';
 import CodeExample from '../../presentational/CodeExample';
+import HueCircle from '../../presentational/HueCircle';
 
 import './index.css';
 
 const diff = `
 Index: languages/ini.js
-===================================================================
+=======================================
 --- languages/ini.js    (revision 199)
 +++ languages/ini.js    (revision 200)
 @@ -1,8 +1,7 @@
@@ -171,7 +172,7 @@ class Tutorial extends TutorialContainer {
           <div className="Tutorial-wide">
             <ColorSpace
               width={600}
-              height={600}
+              height={400}
               colors={base}
               controlsOptions={{
                 enableKeys: false,
@@ -205,7 +206,7 @@ class Tutorial extends TutorialContainer {
           <div className="Tutorial-wide">
             <ColorSpace
               width={600}
-              height={600}
+              height={400}
               colors={accents}
               background={base[7]}
               controlsOptions={{
@@ -213,6 +214,17 @@ class Tutorial extends TutorialContainer {
                 enableZoom: false,
               }}
             />
+          </div>
+          <div className="Tutorial-text">
+            <p>
+              Если убрать яркость и насыщенность, можно изучить распределение
+              акцентов по тонам. Если точки распределены неравномерно, на
+              окружности будут видны пустые области — это те тона, которые можно
+              бы использовать для увеличения контрастности акцентов.
+            </p>
+          </div>
+          <div className="Tutorial-wide">
+            <HueCircle foreground={base[0]} colors={accents} />
           </div>
           <div className="Tutorial-text">
             <Header hash="warm-colors">Тёплые цвета</Header>

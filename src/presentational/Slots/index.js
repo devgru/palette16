@@ -8,6 +8,8 @@ import farthestOf from '../../utils/farthestOf';
 
 import './index.css';
 import { selectColor } from '../../modules/currentPalette';
+import Swatch from '../Swatch';
+import PropTypes from 'prop-types';
 
 const SIZE = 60;
 
@@ -19,15 +21,12 @@ const HEIGHT = SIZE + Y_STEP * 2;
 const PLUS_DY = 18;
 const COLOR_DY = 28;
 
-const Slots = ({
-  colors,
-  slots,
-  addColor,
-  addSlot,
-  uiContext,
-  selectColor,
-}) => {
-  const { textColors, foreground } = uiContext;
+const Slots = (
+  { colors, slots, addColor, addSlot, uiContext, selectColor },
+  { base }
+) => {
+  const foreground = base[7];
+  const textColors = [base[0], base[7]];
 
   const maxSlots = max(slots, ({ colors }) => colors.length);
   const H_SLOTS_COUNT = slots.length + 1;
@@ -119,6 +118,10 @@ const Slots = ({
       </svg>
     </div>
   );
+};
+
+Slots.contextTypes = {
+  base: PropTypes.arrayOf(PropTypes.string),
 };
 
 const mapStateToProps = () => ({});

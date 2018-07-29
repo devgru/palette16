@@ -11,7 +11,6 @@ import generatePoints from '../../utils/generatePoints';
 import createPlaneMesh from '../../utils/createPlaneMesh';
 import createPointMesh from '../../utils/createPointMesh';
 import colorToLabPoint from '../../utils/colorToLabPoint';
-import Swatch from '../Swatch';
 
 class ColorSpace extends Component {
   constructor(props, context) {

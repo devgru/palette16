@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
 
 import TutorialContainer from '../tutorial-container';
 import colorToRgbPoint from '../../utils/colorToRgbPoint';

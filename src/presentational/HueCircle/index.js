@@ -5,6 +5,7 @@ import { range } from 'd3-array';
 import Tick from './Tick';
 
 import './index.css';
+import Swatch from '../Swatch';
 
 const BIG_TICK_SIZE = 4;
 const TICK_SIZE = 2;
@@ -17,14 +18,15 @@ const r = size / 3;
 
 class HueCircle extends Component {
   render() {
-    const { colors, uiContext } = this.props;
+    const { colors, foreground } = this.props;
+    const { base } = this.context;
 
     return (
       <div className="HueCircle">
         <svg width={size} height={size}>
           <g
             transform={`translate(${mid},${mid})`}
-            stroke={uiContext.foreground}
+            stroke={foreground || base[7]}
           >
             <circle fill="none" strokeWidth={0.25} r={r} />
             {BIG_TICKS.map((tick, i) => (
@@ -55,6 +57,10 @@ class HueCircle extends Component {
 
 HueCircle.propTypes = {
   colors: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
+
+HueCircle.contextTypes = {
+  base: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default HueCircle;
