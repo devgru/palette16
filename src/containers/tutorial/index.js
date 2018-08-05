@@ -12,7 +12,7 @@ import ColorSpace from '../../presentational/ColorSpace';
 import Header from '../../presentational/TutorialHeader';
 import Page1 from '../../presentational/TutorialPages/01-Title';
 import Page2 from '../../presentational/TutorialPages/02-Intro';
-import Page3 from '../../presentational/TutorialPages/03-ColorScheme';
+import Page4 from '../../presentational/TutorialPages/04-ColorScheme';
 import InversePage from '../../presentational/InversePage';
 import CodeExample from '../../presentational/CodeExample';
 import HueCircle from '../../presentational/HueCircle';
@@ -45,7 +45,7 @@ class Tutorial extends TutorialContainer {
   }
 
   render() {
-    const { base, accents } = this.props;
+    const { base, accents, all } = this.props;
     if (!base) {
       return null;
     }
@@ -61,8 +61,41 @@ class Tutorial extends TutorialContainer {
         <Page1 />
         <InversePage>
           <Page2 />
+          <div className="Tutorial-text">
+            <Header hash="interactive-elements">Интерактивные элементы</Header>
+            <p>
+              Эта страница создана, чтобы дать вам возможность не только узнать
+              новое, но и сразу проверить эти знания. Для этого используется
+              набор интерактивных элементов.
+            </p>
+            <p>
+              Простейший интерактивный элемент — свотч, цветовая плашка:{' '}
+              <InlineSwatch color="#00FF55" />. Свотч можно выделить курсором
+              или пальцем, при этом во всплывающем блоке можно будет узнать
+              больше о цвете: наиболее подходящее название, координаты в
+              пространствах RGB и HCL, оценку характеристик этого цвета.
+            </p>
+            <p>
+              Наборы цветов в контексте цветовых моделей изображены на
+              трёхмерных визуализациях. Каждую можно покрутить с помощью курсора
+              или пальца. Выглядит это так:
+            </p>
+          </div>
+          <div className="Tutorial-wide">
+            <ColorSpace
+              width={600}
+              height={400}
+              colors={[]}
+              background={base[7]}
+              gridOpacity={1}
+              controlsOptions={{
+                enableKeys: false,
+                enableZoom: false,
+              }}
+            />
+          </div>
         </InversePage>
-        <Page3 />
+        <Page4 />
         <InversePage>
           <div className="Tutorial-text">
             <Header hash="modern-schemes">Современные схемы</Header>
@@ -161,10 +194,6 @@ class Tutorial extends TutorialContainer {
               групп будут контрастны с остальными группами.
             </p>
             <p>
-              О цветовых пространствах можно прочитать на{' '}
-              <a href="#/tutorial/color-spaces">отдельной странице</a>.
-            </p>
-            <p>
               Обратите внимание, как группы цветов расположены в
               LAB-пространстве:
             </p>
@@ -179,6 +208,11 @@ class Tutorial extends TutorialContainer {
                 enableZoom: false,
               }}
             />
+            <span className="Tutorial-aside">
+              О цветовых моделях и их изображении в трёхмерном пространстве
+              можно прочитать на{' '}
+              <a href="#/tutorial/color-spaces">отдельной странице</a>.
+            </span>
           </div>
           <div className="Tutorial-text">
             <p>
@@ -217,10 +251,11 @@ class Tutorial extends TutorialContainer {
           </div>
           <div className="Tutorial-text">
             <p>
-              Если убрать яркость и насыщенность, можно изучить распределение
-              акцентов по тонам. Если точки распределены неравномерно, на
-              окружности будут видны пустые области — это те тона, которые можно
-              бы использовать для увеличения контрастности акцентов.
+              Если не учитывать яркость и насыщенность, можно изучить
+              распределение акцентов по тонам. Если точки распределены
+              неравномерно, на окружности будут видны пустые области — это те
+              тона, которые можно бы использовать для увеличения контрастности
+              акцентов.
             </p>
           </div>
           <div className="Tutorial-wide">
@@ -229,7 +264,7 @@ class Tutorial extends TutorialContainer {
           <div className="Tutorial-text">
             <Header hash="warm-colors">Тёплые цвета</Header>
             <p>
-              Два цвета, которые используются часто и несут явный смысл —{' '}
+              Два цвета, которые используются часто и несут определённый смысл —{' '}
               <InlineSwatch color={accents[0]} /> красный и{' '}
               <InlineSwatch color={accents[3]} /> зелёный. Например, удалённые и
               добавленные строки при просмотре патчей:
@@ -242,11 +277,45 @@ class Tutorial extends TutorialContainer {
               приоритетов, состояний (ошибка, предупреждение), разрешений.
             </p>
             <p>
-              Важно сделать <InlineSwatch color={accents[1]} /> оранжевый и{' '}
-              <InlineSwatch color={accents[2]} /> жёлтый различимыми.
+              <InlineSwatch color={accents[1]} /> Оранжевый и{' '}
+              <InlineSwatch color={accents[2]} /> жёлтый используются реже, но
+              важно, тем не менее, делать их различимыми.
+            </p>
+            <Header hash="cold-colors">Холодные цвета</Header>
+            <p>
+              Холодными чаще всего будут три акцента, с четвёртого по седьмой:{' '}
+              <InlineSwatch color={accents[4]} />
+              <InlineSwatch color={accents[5]} />
+              <InlineSwatch color={accents[6]} />
+            </p>
+            <Header hash="line-of-purple">Пурпурные цвета</Header>
+            <p>
+              Восьмой цвет <InlineSwatch color={accents[7]} /> отличается от
+              остальных, он чаще всего попадает в т.н.{' '}
+              <a href="https://en.wikipedia.org/wiki/Line_of_purples">
+                пурпурную линию
+              </a>, группу цветов между красным и фиолетовым. Их отличие от
+              спектральных цветов в том, что такой цвет не может быть
+              монохроматичным, его нельзя получить излучением одного лазера.
+              Такой цвет нельзя назвать ни тёплым ни холодным, его оттенок будет
+              восприниматься как тёплый или холодный в зависимости от фона, на
+              котором вы его увидите.
             </p>
           </div>
+          <div className="Tutorial-wide">
+            <ColorSpace
+              width={600}
+              height={400}
+              colors={all}
+              background={base[7]}
+              controlsOptions={{
+                enableKeys: false,
+                enableZoom: false,
+              }}
+            />
+          </div>
         </InversePage>
+        <div className="Tutorial-page" />
       </div>
     );
   }

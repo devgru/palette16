@@ -9,6 +9,7 @@ const InlineSwatch = ({ color }, { base }) => {
       style={{
         background: color,
       }}
+      tabIndex="0"
     >
       {JSON.stringify(base)}
       <span className="InlineSwatch-hover">

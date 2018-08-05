@@ -31,7 +31,7 @@ function temperature(color) {
   return C === '0'
     ? undefined
     : H < RED_HUE || H > BLUE_HUE
-      ? 'non-spectral'
+      ? 'line of purples'
       : H < 143.95 ? 'warm' : 'cold';
 }
 

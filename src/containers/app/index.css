@@ -1,7 +1,9 @@
-.App {
+html {
   background: var(--color0);
   color: var(--color7);
+}
 
+.App {
   display: flex;
 }
 

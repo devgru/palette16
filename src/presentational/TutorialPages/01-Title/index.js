@@ -4,7 +4,7 @@ import Header from '../../TutorialHeader';
 export default () => (
   <div className="Tutorial-page">
     <div className="Tutorial-text">
-      <Header hash="intro">Программисты и цвета</Header>
+      <Header hash="intro">Цветовые схемы для айтишников</Header>
       <p>
         Меня зовут Дима и я программист. Я учился программировать с младшей
         школы, все пять лет ВУЗа смотрел в экран по 12 часов в день, практически

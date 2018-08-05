@@ -8,7 +8,6 @@ import farthestOf from '../../utils/farthestOf';
 
 import './index.css';
 import { selectColor } from '../../modules/currentPalette';
-import Swatch from '../Swatch';
 import PropTypes from 'prop-types';
 
 const SIZE = 60;

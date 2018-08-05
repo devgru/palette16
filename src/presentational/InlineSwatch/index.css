@@ -16,6 +16,7 @@
   top: 1em;
 }
 
-.InlineSwatch:hover .InlineSwatch-hover {
+.InlineSwatch:hover .InlineSwatch-hover,
+.InlineSwatch:focus .InlineSwatch-hover {
   display: block;
 }
