@@ -16,6 +16,7 @@ import Page4 from '../../presentational/TutorialPages/04-ColorScheme';
 import InversePage from '../../presentational/InversePage';
 import CodeExample from '../../presentational/CodeExample';
 import HueCircle from '../../presentational/HueCircle';
+import SchemeBar from '../../presentational/SchemeBar';
 
 import './index.css';
 
@@ -45,7 +46,7 @@ class Tutorial extends TutorialContainer {
   }
 
   render() {
-    const { base, accents, all } = this.props;
+    const { base, accents, all, palettes, loadBase16Palette } = this.props;
     if (!base) {
       return null;
     }
@@ -54,6 +55,19 @@ class Tutorial extends TutorialContainer {
 
     const background = base[0];
     const foreground = base[7];
+
+    const selectedPalettes = [
+      'solarized-light',
+      'solarized-dark',
+      'isotope',
+      'tutorial',
+    ].reduce(
+      (hash, key) => ({
+        ...hash,
+        [key]: palettes[key],
+      }),
+      {}
+    );
 
     return (
       <div className="Tutorial">
@@ -78,7 +92,7 @@ class Tutorial extends TutorialContainer {
             <p>
               Наборы цветов в контексте цветовых моделей изображены на
               трёхмерных визуализациях. Каждую можно покрутить с помощью курсора
-              или пальца. Выглядит это так:
+              или пальца. Попробуйте:
             </p>
           </div>
           <div className="Tutorial-wide">
@@ -232,9 +246,7 @@ class Tutorial extends TutorialContainer {
             </p>
             <p>
               Чаще всего акценты отличаются цветовым тоном, а яркость и
-              насыщенность могут быть практически одинаковы. Такая логика
-              позволяет легко отличать акценты от основной последовательности.
-              Посмотрите:
+              насыщенность могут быть практически одинаковы. Посмотрите:
             </p>
           </div>
           <div className="Tutorial-wide">
@@ -303,6 +315,8 @@ class Tutorial extends TutorialContainer {
             </p>
           </div>
           <div className="Tutorial-wide">
+            <Header hash="full-palette">Все цвета схемы</Header>
+            <p>Посмотрим на расположение всех цветов схемы в пространстве:</p>
             <ColorSpace
               width={600}
               height={400}
@@ -313,9 +327,13 @@ class Tutorial extends TutorialContainer {
                 enableZoom: false,
               }}
             />
+            <p>
+              В большинстве схем акценты образуют окружность, примерно через
+              центр которой проходит линия основной последовательности.
+            </p>
           </div>
         </InversePage>
-        <div className="Tutorial-page" />
+        <SchemeBar schemes={selectedPalettes} loadScheme={loadBase16Palette} />
       </div>
     );
   }
@@ -331,7 +349,8 @@ Tutorial.propTypes = {
   }),
 };
 
-const mapStateToProps = ({ currentPalette }) => {
+const mapStateToProps = ({ currentPalette, paletteList }) => {
+  const { palettes } = paletteList;
   const base = [];
   const accents = [];
   if (!currentPalette.slots) {
@@ -352,6 +371,7 @@ const mapStateToProps = ({ currentPalette }) => {
     all,
     accents,
     base,
+    palettes,
   };
 };
 

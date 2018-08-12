@@ -159,12 +159,6 @@ class Home extends Component {
     const foreground = slots[1].colors[3];
     const textColors = [background, foreground];
 
-    const uiContext = {
-      textColors,
-      background,
-      foreground,
-    };
-
     return (
       <Dropzone
         className="Home-body"

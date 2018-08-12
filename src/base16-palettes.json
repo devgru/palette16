@@ -1,4 +1,24 @@
 {
+  "tutorial": {
+    "scheme": "Tutorial",
+    "author": "Dmitriy Semyushkin (https://devg.ru)",
+    "base00": "ffffff",
+    "base01": "eeeeee",
+    "base02": "aaaaaa",
+    "base03": "999999",
+    "base04": "888888",
+    "base05": "777777",
+    "base06": "111111",
+    "base07": "000000",
+    "base08": "ff0000",
+    "base09": "ff9900",
+    "base0A": "ffff00",
+    "base0B": "00ff00",
+    "base0C": "00ffcc",
+    "base0D": "009999",
+    "base0E": "0033ff",
+    "base0F": "ff0066"
+  },
   "3024": {
     "scheme": "3024",
     "author": "Jan T. Sott (http://github.com/idleberg)",

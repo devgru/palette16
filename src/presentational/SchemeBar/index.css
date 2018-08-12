@@ -1,0 +1,14 @@
+.SchemeBar {
+  border-top: 0.2em solid;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.SchemeBlock {
+  text-align: center;
+  padding-top: 0.5em;
+  width: 25%;
+  height: 3em;
+  float: left;
+}

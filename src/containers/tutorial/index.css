@@ -75,6 +75,7 @@
 
 .Tutorial-page p {
   margin: 0.5em 0 0.75em;
+  clear: left;
 }
 .Tutorial-text p,
 .Tutorial-text ul {
