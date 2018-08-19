@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { loadBase16Palette } from '../../modules/currentPalette';
+
 import InlineSwatch from '../../presentational/InlineSwatch';
 import GithubCorner from '../../presentational/GithubCorner';
 import Matrix from '../../presentational/Matrix';
@@ -17,8 +18,13 @@ import InversePage from '../../presentational/InversePage';
 import CodeExample from '../../presentational/CodeExample';
 import HueCircle from '../../presentational/HueCircle';
 import SchemeBar from '../../presentational/SchemeBar';
+import Delta from '../../presentational/Delta';
+
+import delta from '../../utils/delta';
 
 import './index.css';
+
+const deltaE = (fg, bg) => Math.round(delta(fg, bg));
 
 const diff = `
 Index: languages/ini.js
@@ -51,6 +57,17 @@ class Tutorial extends TutorialContainer {
       return null;
     }
 
+    const extremal = [
+      '#000',
+      '#00F',
+      '#F00',
+      '#F0F',
+      '#0F0',
+      '#0FF',
+      '#FF0',
+      '#FFF',
+    ];
+
     const allInverted = [...[...base].reverse(), ...accents];
 
     const background = base[0];
@@ -59,7 +76,7 @@ class Tutorial extends TutorialContainer {
     const selectedPalettes = [
       'solarized-light',
       'solarized-dark',
-      'isotope',
+      'solarflare',
       'tutorial',
     ].reduce(
       (hash, key) => ({
@@ -88,6 +105,11 @@ class Tutorial extends TutorialContainer {
               или пальцем, при этом во всплывающем блоке можно будет узнать
               больше о цвете: наиболее подходящее название, координаты в
               пространствах RGB и HCL, оценку характеристик этого цвета.
+            </p>
+            <p>
+              Для описания различия пар цветов используется такое представление:{' '}
+              <Delta c1="#FF0" c2="#00F" />. В тексте я расскажу, что оно
+              обозначает.
             </p>
             <p>
               Наборы цветов в контексте цветовых моделей изображены на
@@ -298,7 +320,9 @@ class Tutorial extends TutorialContainer {
               Холодными чаще всего будут три акцента, с четвёртого по седьмой:{' '}
               <InlineSwatch color={accents[4]} />
               <InlineSwatch color={accents[5]} />
-              <InlineSwatch color={accents[6]} />
+              <InlineSwatch color={accents[6]} />. Эта часть палитры часто
+              используется в средах разработки для выделения ключевых слов,
+              строк, идентификаторов.
             </p>
             <Header hash="line-of-purple">Пурпурные цвета</Header>
             <p>
@@ -327,12 +351,66 @@ class Tutorial extends TutorialContainer {
                 enableZoom: false,
               }}
             />
+          </div>
+          <div className="Tutorial-text">
             <p>
               В большинстве схем акценты образуют окружность, примерно через
               центр которой проходит линия основной последовательности.
             </p>
           </div>
         </InversePage>
+        <div className="Tutorial-text">
+          <Header hash="delta-e-formula">Формула цветового различия</Header>
+          <p>
+            Перед тем, как перейти к созданию собственной схемы, важно понимать
+            как оценивать разницу между цветами.
+          </p>
+          <p>
+            Для этого используется формула цветового различия — формула,
+            принимающая на вход два цвета и возвращающая число, показывающее
+            различие между двумя цветами.
+          </p>
+          <p>
+            Короткое название формулы — дельта-е. Она существует в трёх версиях:
+            1976, 1994 и 2000 года. В версии 1976 года дельта-е пропорциональна
+            расстоянию в LAB-пространстве. Обновлённые версии учитывают
+            нелинейность цветовых пространств. В этом документе используется
+            формула 2000 года.
+          </p>
+          <p>
+            Примеры результатов её использования:<br />
+            <Delta c1="#FFF" c2="#00F" />
+            <br />
+            <Delta c1="#FFF" c2="#000" />
+            <br />
+            <Delta c1="#FF0" c2="#000" />
+            <br />
+            <Delta c1="#0F0" c2="#F0F" />
+            <br />
+            <Delta c1="#0F0" c2="#00F" />
+            <br />
+          </p>
+          <p>
+            Формулу можно применить и к таблице, чтобы численно оценить различие
+            между цветами фона и текста:
+          </p>
+          <Matrix colors={base} fn={deltaE} />
+          <p>
+            Различие между цветами меньше 5 говорит о том, что пару цветов можно
+            различить только поставив рядом две крупных прямоугольника, в других
+            ситуациях цвета различить проблематично:{' '}
+            <Delta c1="#000" c2="#000009" />. Различие порядка 15 уже можно
+            разглядеть: <Delta c1="#000" c2="#00052A" />. 30 единиц различия
+            дают ощутимо разные цвета: <Delta c1="#000" c2="#00398C" />. 50
+            единиц — достаточная контрастность для использования пары цветов для
+            текста и фона: <Delta c1="#000" c2="#0070FF" />.
+          </p>
+          <p>
+            Теперь посмотрим на полную таблицу различий цветов текущей цветовой
+            схемы:
+          </p>
+          <Matrix colors={all} fn={deltaE} />
+        </div>
         <SchemeBar schemes={selectedPalettes} loadScheme={loadBase16Palette} />
       </div>
     );

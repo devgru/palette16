@@ -4,10 +4,10 @@
 }
 
 .MatrixCell {
-  width: 1.5em;
-  height: 1.5em;
+  width: 1.75em;
+  height: 1.75em;
   margin: 0;
-  padding: 0;
+  padding: 0.2em 0 0;
   display: inline-block;
   text-align: center;
 }

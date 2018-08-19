@@ -18,21 +18,16 @@ function lightness(color) {
     : L < 35 ? 'dark' : L > 95 ? 'very bright' : L > 65 ? 'bright' : undefined;
 }
 
-function chromaticity(color) {
-  const C = color.c;
-
-  return C === '0' ? 'monochrome' : C < 10 ? 'almost achromatic' : undefined;
+function chromaticity({ c }) {
+  return c === 0 ? 'monochrome' : c < 10 ? 'almost achromatic' : undefined;
 }
 
-function temperature(color) {
-  const H = color.h;
-  const C = color.c;
-
-  return C === '0'
+function temperature({ h, c }) {
+  return c === 0
     ? undefined
-    : H < RED_HUE || H > BLUE_HUE
+    : h < RED_HUE || h > BLUE_HUE
       ? 'line of purples'
-      : H < 143.95 ? 'warm' : 'cold';
+      : h < 143.95 ? 'warm' : 'cold';
 }
 
 function propertyOf(color) {

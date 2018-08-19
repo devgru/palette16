@@ -2,20 +2,22 @@ import React from 'react';
 
 import './index.css';
 
-export default ({ colors }) => (
+const A = () => 'A';
+
+export default ({ colors, fn = A }) => (
   <div className="Matrix">
-    {colors.map((bg, i) => (
-      <div key={i} className="MatrixRow">
-        {colors.map((fg, j) => (
+    {colors.map((bg, y) => (
+      <div key={y} className="MatrixRow">
+        {colors.map((fg, x) => (
           <div
-            key={j}
+            key={x}
             className="MatrixCell"
             style={{
               color: fg,
               background: bg,
             }}
           >
-            A
+            {fn(colors[x], colors[y])}
           </div>
         ))}
       </div>
